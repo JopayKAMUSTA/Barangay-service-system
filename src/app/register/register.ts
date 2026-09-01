@@ -47,7 +47,7 @@ export class Register {
         contactNumber: this.contactNumber,
         birthdate: this.birthdate,
         address: this.address,
-        role:'admin',
+        role:'resident',
         createdAt: new Date()
       });
 

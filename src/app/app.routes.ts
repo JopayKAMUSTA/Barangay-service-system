@@ -29,6 +29,10 @@ export const routes: Routes = [
         component: Login
     },
 
+    {
+        path: 'register',
+        component: Register
+    },
 
     {
         path:'',
