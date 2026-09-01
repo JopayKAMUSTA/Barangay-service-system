@@ -1,0 +1,57 @@
+<aside class="admin-sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="barangay-logo">
+            ME
+        </div>
+
+
+        <div>
+            <h2>MankilamEase</h2>
+            <span>Admin Panel</span>
+        </div>
+    </div>
+
+
+    
+    <nav class="sidebar-menu">
+            
+        <a routerLink="/admin-dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true}">
+            Dashboard
+        </a>
+
+        <a routerLink="/admin-request"
+        routerLinkActive="active">
+           Document Request
+        </a>
+
+        <a routerLink="/admin-announcement"
+        routerLinkActive="active">
+            Announcements
+        </a>
+
+        <a routerLink="/admin-reports"
+        routerLinkActive="active">
+           Reports
+        </a>
+
+        <a routerLink="/admin-resident"
+        routerLinkActive="active">
+            Residents
+        </a>
+        
+    </nav>
+    
+
+
+    <div class="sidebar-footer">
+        <button
+        type="button"
+        (click)="logout()">
+            Logout
+        </button>
+    </div>
+</aside>

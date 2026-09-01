@@ -1,0 +1,60 @@
+<div class="register-contaier">
+
+    <h2>Resident Registration</h2>
+
+    <form (ngSubmit)="register()">
+
+        <input type="text"
+        [(ngModel)]="firstname"
+        name="firstname"
+        placeholder="First Name"
+        required>
+
+        <input type="text"
+        [(ngModel)]="middlename"
+        name="middlename"
+        placeholder="Middle Name"
+        required>
+
+        <input type="text"
+        [(ngModel)]="lastname"
+        name="lastname"
+        placeholder="Last Name"
+        required>
+
+        <input type="email"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="Email"
+        required>
+
+        <input type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Password"
+        required>
+
+        <input type="text"
+        [(ngModel)]="contactNumber"
+        name="contactNumber"
+        placeholder="Contact Number"
+        required>
+
+        <input type="date"
+        [(ngModel)]="birthdate"
+        name="birthdate"
+        required>
+        
+        <input type="text"
+        [(ngModel)]="address"
+        name="address"
+        placeholder="Address"
+        required>
+
+        <button type="submit">
+            Register
+        </button>
+    </form>
+
+    <p *ngIf="message">{{ message }}</p>
+</div>

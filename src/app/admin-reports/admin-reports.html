@@ -1,0 +1,91 @@
+<div class="reports-page">
+
+    <div class="page-header">
+        <h1>Reports</h1>
+        <p>
+            Overview if document requests in MankilamEase
+        </p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+             
+            <span> Total Requests</span>
+
+            <h2>
+                {{ totalRequests$ | async }}
+            </h2>
+        </div>
+
+        <div class="stat-card">
+
+            <span>Pending</span>
+
+            <h2>
+                {{ pendingRequests$ | async }}
+            </h2>
+        </div>
+
+        <div class="stat-card">
+            
+            <span>Approved</span>
+            
+            <h2>
+                {{ approvedRequests$ | async }}
+            </h2> 
+        </div>
+
+
+        <div class="stat-card">
+            
+            <span>Rejected</span>
+
+            <h2>
+                {{ rejectedRequests$ | async }}
+            </h2>
+        </div>
+
+    </div>
+
+    <div class="report-card">
+        
+        <h2>
+            Document Request Breakdown
+        </h2>
+
+        <div class="document-list">
+
+            <div class="document-row">
+
+                <span>
+                    Certificate of Residency
+                </span>
+
+                <strong>
+                    {{ certificateOfResidency$ | async }}
+                </strong>
+            </div>
+
+            <div class="document-row">
+
+                <span>
+                    Certificate of Indigency
+                </span>
+
+                <strong>
+                    {{ certificateOfIndigency$ | async }}
+                </strong>
+            </div>
+
+            <div class="document-row">
+                <span>
+                    Barangay Clearance
+                </span>
+
+                <strong>
+                    {{ barangayClearance$ | async }}
+                </strong>
+            </div>
+        </div>
+    </div>
+</div>

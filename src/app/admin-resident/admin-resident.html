@@ -1,0 +1,75 @@
+<div class="resident-page">
+
+    <div class="page-header">
+        <div>
+            <h1>Resident Management</h1>
+            <p>View and manage registered MankilamEase residents.</p>
+        </div>
+    </div>
+
+
+    <div class="resident-card">
+
+        <div class="search-container">
+
+            <input type="text" [(ngModel)]="searchText"
+            (input)="searchResidents()"
+            placeholder="Search by name, email, or contact number...">
+
+        </div>
+
+        <div *ngIf="filteredResidents$ | async as residents">
+
+            <p class="empty-message"
+            *ngIf="residents.length === 0">
+            No residents found
+            </p>
+
+            <div class="table-wrapper"
+            *ngIf="residents.length > 0">
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Birthdate</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let resident of residents">
+
+                        <td>
+                            <strong>
+                                {{ resident.firstname }}
+                                {{ resident.middlename }}
+                                {{ resident.lastname }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ resident.email }}
+                        </td>
+                        <td>
+                            {{ resident.contactNumber }}
+                        </td>
+                        <td>
+                            {{ resident.birthdate }}
+                        </td>
+                        <td>
+                            {{ resident.address }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>

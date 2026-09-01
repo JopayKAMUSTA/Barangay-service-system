@@ -1,0 +1,45 @@
+<aside class="sidebar">
+
+    <div class="logo">
+        <h2>Barangay Mankilam</h2>
+        <p>Service System</p>
+    </div>
+
+    <nav>
+
+        <a routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]=" { exact: true}">
+            Dashboard
+        </a>
+
+        <a routerLink="/document-request"
+        routerLinkActive="active">
+            Request Document
+        </a>
+
+        <a routerLink="/announcement"
+        routerLinkActive="active">
+            Announcements
+        </a>
+
+        <a routerLink="/my-request"
+        routerLinkActive="active">
+            My Request
+        </a>
+
+        <a routerLink="/my-profile"
+        routerLinkActive="active">
+            My profile
+        </a>
+    </nav>
+    
+    
+    <div class="logout">
+        <button
+        type="button"
+        (click)="logout()">
+            Logout
+        </button>
+    </div>
+</aside>

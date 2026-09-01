@@ -1,0 +1,48 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body 
+{
+
+    margin: 0;
+    padding: 0;
+
+    font-family: "Segeo UI",Arial, sans-serif;
+
+    background: #f5f6f8;
+    color: #333;
+}
+
+button, input, textarea, select
+{
+
+    font-family: inherit;
+
+}
+
+button
+{
+
+    cursor: pointer;
+
+}
+
+:root 
+{
+    --primary: #f57c00;
+    --primary-dark: #e66f00;
+    --primary-light: #fff3e0;
+
+    --background: #f5f6f8;
+    --white: #ffffff;
+
+    --text: #333333;
+    --text-light: #777777;
+
+    --border: #e5e5e5;
+
+    --success: #2e7d32;
+    --danger: #d32f2f;
+    --warning: #f9a825;
+}

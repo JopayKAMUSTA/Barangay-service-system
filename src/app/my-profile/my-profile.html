@@ -1,0 +1,97 @@
+<div class="profile-page">
+
+    <div class="page-header">
+
+        <h1>My Profile</h1>
+
+        <p>
+            View your personal Information.
+        </p>
+    </div>
+
+
+    <div *ngIf="profile$ | async as profile">
+
+        <div class="profile-card">
+
+            <h2>
+                Personal Information
+            </h2>
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+
+                    <span>
+                        First Name
+                    </span>
+
+                    <strong>
+                        {{ profile.firstname}}
+                    </strong>
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        Middle Name
+                    </span>
+
+                    <strong>
+                        {{ profile.middlename || 'N/A' }}
+                    </strong>
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong>
+                        {{ profile.email }}
+                    </strong>
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        Contact Number
+                    </span>
+
+                    <strong>
+                        {{ profile.contactNumber }}
+                    </strong>
+                </div>
+
+                <div class="profile-item">
+
+                    <span>
+                        BirthDate
+                    </span>
+
+                    <strong>
+                        {{ profile.birthdate }}
+                    </strong>
+                </div>
+
+                <div class="profile-item full-width">
+
+                    <span>
+                        Address
+                    </span>
+
+                    <strong>
+                        {{ profile.address }}
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-message" *ngIf="!(profile$ | async)">
+        <p>
+            Please log in first.
+        </p>
+    </div>
+</div>

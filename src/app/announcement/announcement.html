@@ -1,0 +1,42 @@
+<div class="announcement-page">
+
+    <div class="page-header">
+
+        <h1> Announcements</h1>
+
+        <p>
+            Stay updated with the latest announcements
+            from MankilamEase
+        </p>
+    </div>
+
+    <div class="announcement-list">
+
+        <div class="announcement-card"
+        *ngFor="let announcement of announcements$ | async">
+
+        <div class="announcement-header">
+
+            <h2>
+                {{ announcement.title}}
+            </h2>
+
+            <span>
+                {{ announcement.createdAt?.toDate() | date:'medium' }}
+            </span>
+        </div>
+
+        <p class="announcement-message">
+            {{ announcement.message}}
+        </p>
+        </div>
+
+        <div class="empty-message"
+        *ngIf="(announcements$ | async)?.length === 0">
+
+        <p>
+            No announcements available.
+        </p>
+        </div>
+    </div>
+</div>

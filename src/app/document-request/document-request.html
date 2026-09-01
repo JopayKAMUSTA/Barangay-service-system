@@ -1,0 +1,70 @@
+<div class="request-page">
+
+    <div class="page-header">
+
+        <h1>Request a Document</h1>
+
+        <p>
+            Submit a request for a barangay document online.
+        </p>
+    </div>
+
+    <div class="request-card">
+
+        <form (ngSubmit)="submitRequest()">
+
+            <div class="form-group">
+
+                <label for="documentType">
+                    Document Type
+                </label>
+
+                <select id="documentType"
+                [(ngModel)]="documentType"
+                name="documentType"
+                required>
+            
+                    <option value="">
+                        Select a Document
+                    </option>
+
+                    <option value="Certificate of Residency">
+                        Certificate of Residency
+                    </option>
+
+                    <option value="Certificate of Indigency">
+                        Certificate of Indigency
+                    </option>
+
+                    <option value="Barangay Clearance">
+                        Barangay Clearance
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+
+                <label for="purpose">
+                    Purpose
+                </label>
+
+                <textarea name="purpose" id="purpose"
+                [(ngModel)]="purpose"
+                placeholder="Enter the purpose of your request" required>
+                </textarea>
+            </div>
+
+            <button
+            type="submit"
+            class="submit-button">
+            
+                Submit Request
+
+            </button>
+
+            <p class="status-message" *ngIf="statusMessage">
+                {{ statusMessage }}
+            </p>
+        </form>
+    </div>
+</div>

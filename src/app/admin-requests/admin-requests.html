@@ -1,0 +1,300 @@
+<div class="admin-request-page">
+
+    <div class="page-header">
+
+        <h1>Document Request</h1>
+
+        <p>
+            Review and manage document requests submitted by residents.
+        </p>
+    </div>
+
+
+    <div class="requests-card">
+
+        <div *ngIf="requests$ | async as requests">
+
+            <p class="empty-message"
+            *ngIf="requests.length === 0">
+
+            No document requests found.
+            </p>
+       
+
+        <div class="table-wrapper" *ngIf="requests.length > 0">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Resident</th>
+                        <th>Document</th>
+                        <th>Purpose</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let request of requests">
+
+                        <td>
+
+                            <div class="resident-card">
+
+                                <strong>
+                                    {{ request.firstname || request.email}}
+                                </strong>
+
+                                <small>
+                                    {{ request.email }}
+                                </small>
+                            </div>
+                        </td>
+
+                        <td>
+                            {{ request.documentType }}
+                        </td>
+
+                        <td>
+                            {{ request.purpose }}
+                        </td>
+
+                        <td>
+                            {{ request.createdAt?.toDate() | date:'medium' }}
+                        </td>
+
+                        <td>
+
+                            <span class="status" [ngClass]="request.status">
+
+                                {{ request.status }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                               <button type="button" class="view-button"
+                               (click)="viewRequest(request)">
+                                
+                               View Details
+                                </button>
+                      
+
+                            <span class="completed" *ngIf="request.status !== 'pending'">
+
+                                Completed
+
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="modal-overlay"
+            *ngIf="showModal"
+            (click)="closeModal()">
+                
+            <div class="modal-card"
+            (click)="$event.stopPropagation()">
+
+            <div class="modal-header">
+
+                <div>
+
+                     <h2>
+                        Request Details
+                     </h2>
+
+                     <p>
+                        Review resident information and document request.
+                     </p>
+
+                </div>
+
+                <button type="button" class="close-button" (click)="closeModal()">
+                    X
+                </button>
+            </div>
+
+            <div class="modal-section">
+
+                <h3>
+                    Resident Information
+                </h3>
+
+                <div class="information-grid"
+                *ngIf="selectedResident">
+
+                <div class="information-item">
+
+                    <span>
+                        First Name
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.firstname }}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Middle Name
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.middlename || 'N/A' }}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Last Name
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.lastname }}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.email }}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+                    
+                    <span>
+                        Contact Number
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.contactNumber }}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Birthdate
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.birthdate }}
+                    </strong>
+                </div>
+
+                <div class="information-item full-width ">
+
+                    <span>
+                        Address
+                    </span>
+
+                    <strong>
+                        {{ selectedResident.address }}
+                    </strong>
+                </div>
+
+                </div>
+                <p *ngIf="!selectedResident">
+
+                    Resident information not found.
+                </p>
+            </div>
+
+            <div class="modal-section"
+            *ngIf="selectedRequest">
+
+            <h3>Document Request</h3>
+
+            <div class="information-grid">
+
+                <div class="information-item">
+
+                    <span>
+                        Document Type
+                    </span>
+
+                    <strong>
+                        {{ selectedRequest.documentType }}
+                    </strong>
+                    
+                </div>
+                
+                <div class="information-item">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <span class="status" 
+                    [ngClass]="selectedRequest.status">
+
+                    {{ selectedRequest.status }}
+
+                    </span>
+                </div>
+
+                <div class="information-item full-width">
+
+                    <span>
+                        Purpose
+                    </span>
+
+                    <strong>
+                        {{ selectedRequest.purpose }}
+                    </strong>
+                </div>
+
+                <div class="information-item full-width">
+
+                    <span>
+                        Date Requested
+                    </span>
+
+                    <strong>
+                        {{ selectedRequest.createdAt?.toDate()| date:'medium' }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-actions"
+        *ngIf="selectedRequest?.status === 'pending' ">
+    
+            <button type="button" class="reject-button"
+            (click)="updateStatus(selectedRequest.id, 'rejected' )">
+
+                Reject Request
+
+            </button>
+
+            <button type="button" class="approve-button"
+            (click)="updateStatus(selectedRequest.id, 'approved')">
+        
+                Approve Request
+
+            </button>
+            
+        </div>
+            </div>
+        </div>
+        </div>
+    </div>
+     </div>
+</div>
