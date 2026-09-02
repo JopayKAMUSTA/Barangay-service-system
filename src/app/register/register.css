@@ -1,3 +1,114 @@
-input {
-    border: solid black 1px;
+:host
+{
+    display: block;
+    min-height: 100vh;
+    padding: 1px;
+    box-sizing: border-box;
+    background: #f7f7f7;
+}
+
+.register-container
+{
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    font-family: "Segoe UI",sans-serif;
+}
+
+.register-container h2
+{
+    margin: 0;
+    text-align: center;
+    color: #e87500;
+    font-size: 28px;
+}
+
+.register-container > p
+{
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.register-container form
+{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.register-container input
+{
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.register-container input:focus
+{
+    border-color: #e87500;
+    box-shadow:  0 0 0 2px rgba(232, 117, 0 ,0.1);
+}
+
+.register-container label
+{
+    margin-bottom: -8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.register-container button
+{
+    margin-top: 5px;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #e87500;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.register-container button:hover
+{
+    background: #cf6600;
+}
+
+.register-container .message
+{
+    text-align: center;
+    color: #2e7d32;
+    font-size: 14px;
+}
+
+.register-container a 
+{
+    color: #e87500;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-container a:hover
+{
+    text-decoration: underline;
+}
+
+@media (max-width: 600px)
+{
+    .register-container
+    {
+        margin: 20px;
+        padding: 25px;
+    }
 }

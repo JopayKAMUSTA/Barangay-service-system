@@ -3,11 +3,12 @@ import {FormsModule} from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword} from '@angular/fire/auth';
 import { Firestore, doc, setDoc} from '@angular/fire/firestore';
 import { CommonModule }  from '@angular/common';
+import { RouterLink, Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -15,6 +16,7 @@ import { CommonModule }  from '@angular/common';
 export class Register {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private router = inject(Router);
 
 
   firstname = '';
@@ -52,6 +54,14 @@ export class Register {
       });
 
       this.message = 'Registration successful';
+
+      setTimeout(() =>
+         {
+
+        this.router.navigate(['/login']);
+
+      },1500
+    );
 
 
     } catch(error: any){
