@@ -1,10 +1,86 @@
+<div class="dashboard-page">
 
-<div class="dashboard">
-    <h1>Barangay Mankilam</h1>
+    <div class="page-header">
 
-    <h2>Resident Dashboard</h2>
+        <div>
+            <h1>
+                Welcome, Resident
+            </h1>
 
-    <p>Welcome  to the Barangay Mankilam Service System</p>
+            <p>
+                Manage your barangay services and requests
+            </p>
+        </div> 
+         <a routeLink="/document-request" class="request-button">
+        Request a Document
+        </a>
+     </div>
 
-   
+     <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+            <div>
+                <h3>
+                    Request Document
+                </h3>
+
+                <p>
+                    Submit a new barangay document request.
+                </p>
+            </div>
+        </div>
+        
+        <div class="dashboard-card">
+        <div class="card-icon"></div>
+        <div>
+            <h3>
+                My Requests
+            </h3>
+
+            <p>
+                Check the status of your requests.
+            </p>
+        </div>
+     </div>
+
+     <div class="dashboard-card">
+        <div class="card-icon">!</div>
+        <div>
+            <h3>
+                Announcements
+            </h3>
+
+            <p>
+                View the latest barangay announcements.
+            </p>
+        </div>
+     </div>
 </div>
+     <div class="dashboard-section">
+        <div class="section-header">
+            <div>
+                <h2>
+                    Recent Requests
+                </h2>
+
+                <p>
+                    Your latest document requests wwill appear here.
+                </p>
+            </div>
+
+            <a routeLink="/my-request">View All</a>
+        </div>
+        
+        <div class="empty-state">
+            <h3>
+                No Recent Requests
+            </h3>
+            <p>
+                You haven't submitted any document requests yet.
+            </p>
+
+            <a routerLink="/document-request" class="secondary-button">
+                Make a Request
+            </a>
+        </div>
+     </div>
