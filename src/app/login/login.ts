@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword, user } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink} from '@angular/router';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule,RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
