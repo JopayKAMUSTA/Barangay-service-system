@@ -1,35 +1,41 @@
-<div class="my-request-page">
+<div class="request-page">
 
     <div class="page-header">
+        <div>
+            <h1>
+                My Requests
+            </h1>
 
-        <h1>My Requests</h1>
-
-        <p>
-            View and track your document request.
-        </p>
-
+            <p>
+                View and track your barangay document requests.
+            </p>
+        </div>
     </div>
 
+    <div class="request-card">
 
-    <div class="requests-card">
+        <div class="loading" *ngIf="loading">
+            Loading your requests....
+        </div>
+        <ng-container *ngIf="!loading">
+        <ng-container *ngIf="!loading && requests | async as requestList ">
 
-        <div *ngIf="requests$ | async as requests">
 
-            <div class="empty-message"
-            *ngIf="requests.length === 0">
+            <div class="empty-state" 
+            *ngIf="requestList.length === 0">
             
+            <h3>
+                No Requests found
+            </h3>
+
             <p>
-                You haven't submitted any document requests yet
+                You haven't submitted any document requests yet.
             </p>
-
-            <a routerLink="/document-request">
-                Request a Document
-            </a>
-
             </div>
 
+
             <div class="table-wrapper"
-            *ngIf="requests.length > 0">
+            *ngIf="requestList.length > 0">
             
             <table>
 
@@ -38,15 +44,15 @@
                     <tr>
                         <th>Document</th>
                         <th>Purpose</th>
+                        <th>Fee</th>
+                        <th>Date</th>
                         <th>Status</th>
-                        <th>Date Requested</th>
-
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    <tr *ngFor="let request of requests">
+                    <tr *ngFor="let request of requestList">
 
                         <td>
                             <strong>
@@ -55,23 +61,58 @@
                         </td>
 
                         <td>
-                            {{ request.purpose }}
+                            <strong>
+                                {{ request.purpose}}
+                            </strong>
                         </td>
 
                         <td>
-                            <span class="status" [ngClass]="request.status">
+                            <strong>
+                                P{{ request.fee | number:'1.2-2' }}
+                            </strong>
+                        </td>
 
-                                {{ request.status}}
+                        <td>
+                            <strong>
+                                {{ request.createdAt?.toDate?.() | date:'medium' }}
+                            </strong>
+                        </td>
+
+                        <td>
+
+                            <span class="status" 
+                            [ngClass]="request.status.toLowerCase()">
+
+                                {{ request.status }}
+                            
                             </span>
                         </td>
 
                         <td>
-                            {{ request.createdAt?.toDate() | date:'medium' }}
+
+                            <span *ngIf="request.status === 'Rejected' && request.remarks"
+                            class="rejection-remarks">
+                            
+                            {{ request.remarks }}
+
+                            </span>
+
+                            <span *ngIf="request.status !== 'Rejected' || !request.remarks">
+
+                                -
+                                
+                            </span>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        </div>
+            </div>
+
+        </ng-container>
+        </ng-container>
+  
+
+     
+        
     </div>
 </div>

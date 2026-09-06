@@ -1,5 +1,6 @@
-import { Component, inject, EnvironmentInjector, runInInjectionContext } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule} from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { Firestore, collection, collectionData, doc, updateDoc, getDoc} from '@angular/fire/firestore';
 
@@ -7,7 +8,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-requests',
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './admin-requests.html',
   styleUrl: './admin-requests.css',
 })
@@ -18,11 +19,17 @@ export class AdminRequests {
   
     showModal = false;
 
+    showRejectForm= false;
+    rejectionRemarks ='';
+
    private firestore = inject(Firestore);
-   private injector = inject(EnvironmentInjector);
 
    requests$: Observable<any[]>;
 
+
+
+
+   
    constructor(){
     
 
@@ -39,6 +46,68 @@ export class AdminRequests {
     );
 
    }
+
+
+
+
+
+   async rejectRequest()
+   {
+    if(!this.selectedRequest)
+    {
+      return;
+    }
+
+    const remarks = this.rejectionRemarks.trim();
+
+    if(!remarks)
+    {
+      return;
+    }
+
+    try
+    {
+      const requestRef = doc(
+        this.firestore,
+        'documentRequests',
+        this.selectedRequest.id
+      );
+
+      await updateDoc(
+        requestRef,
+        {
+          status: 'Rejected',
+          remarks: remarks
+        }
+      );
+
+      console.log('Request rejected. ');
+
+      this.closeModal();
+    }
+    catch(error)
+    {
+      console.error(
+        'Error rejecting requests:', error
+      );
+    }
+   }
+
+
+
+
+
+   cancelReject()
+   {
+    this.showRejectForm = false;
+    this.rejectionRemarks = '';
+   }
+   
+
+
+
+
+
    
    async viewRequest(request: any)
    {
@@ -60,50 +129,52 @@ export class AdminRequests {
    
     try
     {
-
-      const residentDoc = await runInInjectionContext(
-        this.injector,
-        () => 
-        {
-          const residentRef = doc
-          (
-            this.firestore,
-            'users',
-            request.userId
-          );
-          return getDoc(residentRef);
-        }
+      const residentRef = doc(
+        this.firestore,
+        'users',
+        request.userId
       );
 
-      if(residentDoc.exists())
-      {
-        this.selectedResident = residentDoc.data();
+      const residentDoc = await getDoc(
+        residentRef
+      );
 
-        console.log
-        (
+      if (residentDoc.exists())
+      {
+        this.selectedResident = 
+        residentDoc.data();
+
+        console.log(
           'Resident information: ',
           this.selectedResident
         );
+
       }
-      else
+      else 
       {
-        console.log
-        (
+        console.log(
           'No resident document found: ',
           request.userId
         );
+
         this.selectedResident = null;
       }
 
       this.showModal = true;
-
+     
     }
-    catch (error)
-    {
-      console.error (error);
-    }
+      catch (error)
+      {
+        console.error ('Error loading resident: ',error);
 
+        this.selectedResident = null;
+        this.showModal = true;
+      }
   }
+
+
+
+
 
   closeModal()
   {
@@ -111,14 +182,64 @@ export class AdminRequests {
 
     this.selectedRequest = null;
     this.selectedResident = null;
-
   }
 
-  async updateStatus( requestId: string, status: string)
-  {
+
+
+
+
+  async updatePaymentStatus(
+    requestId:string,
+    paymentStatus:String
+  ){
+
     try
     {
-      const requestRef = doc (
+      const requestRef = doc(
+        this.firestore,
+        'documentRequests',
+        requestId
+      );
+
+      await updateDoc(
+        requestRef,
+        {
+          paymentStatus: paymentStatus
+        }
+      );
+
+      console.log(
+        'Payment status updated: ',
+        paymentStatus
+      );
+
+      this.selectedRequest = {
+        ...this.selectedRequest,
+        paymentStatus:paymentStatus
+      };
+    }
+    catch(error)
+    {
+      console.error(
+        'Error updating payment status: ',
+        error
+      );
+    }
+  }
+
+
+
+
+
+
+  async updateStatus(
+    requestId:string,
+    status: string
+  ) {
+
+    try
+    {
+      const requestRef = doc(
         this.firestore,
         'documentRequests',
         requestId
@@ -131,11 +252,19 @@ export class AdminRequests {
         }
       );
 
+      console.log(
+        'Request status updated: ',
+        status
+      );
+
       this.closeModal();
     }
-      catch (error)
-      {
-        console.error (error);
-      }
+    catch(error)
+    {
+      console.error(
+        'Error updating request status:',
+        error
+      );
+    }
   }
 }

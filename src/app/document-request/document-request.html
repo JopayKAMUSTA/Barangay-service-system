@@ -28,17 +28,12 @@
                         Select a Document
                     </option>
 
-                    <option value="Certificate of Residency">
-                        Certificate of Residency
+                    <option [value]="document.id" *ngFor="let document of documentTypes$ | async"
+                    [disabled]="document.status !== 'Active' ">
+                        {{ document.name }} -
+                        P{{ document.fee | number:'1.2-2' }}
                     </option>
 
-                    <option value="Certificate of Indigency">
-                        Certificate of Indigency
-                    </option>
-
-                    <option value="Barangay Clearance">
-                        Barangay Clearance
-                    </option>
                 </select>
             </div>
 

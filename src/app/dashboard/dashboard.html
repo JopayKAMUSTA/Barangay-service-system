@@ -4,7 +4,7 @@
 
         <div>
             <h1>
-                Welcome, Resident
+                Welcome. {{ firstname || 'resident' }}
             </h1>
 
             <p>
@@ -68,10 +68,16 @@
                 </p>
             </div>
 
-            <a routeLink="/my-request">View All</a>
+            <a routerLink="/my-request">View All</a>
+        </div>
+
+        <div *ngIf="loading" class="empty-state">
+            <p>
+                Loading your requests...
+            </p>
         </div>
         
-        <div class="empty-state">
+        <div *ngIf="!loading && recentRequests.length === 0" class="empty-state">
             <h3>
                 No Recent Requests
             </h3>
@@ -82,5 +88,30 @@
             <a routerLink="/document-request" class="secondary-button">
                 Make a Request
             </a>
+        </div>
+        <div class="requests-list" *ngIf="!loading && recentRequests.length > 0">
+
+            <div class="request-item" *ngFor="let request of recentRequests">
+
+                <div class="request-info">
+
+                    <h3> 
+                        {{ request.documentType }}
+                    </h3>
+
+                    <p>
+                        {{ request.purpose }}
+                    </p>
+
+                    <small>
+                        {{ request.createdAt?.toDate() | date:'medium'}}
+                    </small>
+                </div>
+
+                <span class="status" [ngClass]="request.status">
+
+                    {{ request.status }}
+                </span>
+            </div>
         </div>
      </div>

@@ -15,6 +15,7 @@ import { ResidentLayout } from './layout/resident-layout/resident-layout';
 import { AdminLayout } from './layout/admin-layout/admin-layout';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
+import { AdminDocumentType } from './admin-document-type/admin-document-type';
 
 export const routes: Routes = [
     
@@ -45,6 +46,11 @@ export const routes: Routes = [
             {
                 path: 'admin-dashboard',
                 component: AdminDashboard
+            },
+
+            {
+                path:'admin-document-type',
+                component: AdminDocumentType
             },
 
             {

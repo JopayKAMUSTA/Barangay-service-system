@@ -47,7 +47,7 @@
                             <div class="resident-card">
 
                                 <strong>
-                                    {{ request.firstname || request.email}}
+                                    {{ request.firstname}}
                                 </strong>
 
                                 <small>
@@ -70,7 +70,7 @@
 
                         <td>
 
-                            <span class="status" [ngClass]="request.status">
+                            <span class="status" [ngClass]="request.status.toLowerCase()">
 
                                 {{ request.status }}
                             </span>
@@ -85,11 +85,12 @@
                                 </button>
                       
 
-                            <span class="completed" *ngIf="request.status !== 'pending'">
-
+                           <span class="completed"
+                           *ngIf="request.status === 'Completed'">
+                        
                                 Completed
 
-                            </span>
+                        </span>
                         </td>
                     </tr>
                 </tbody>
@@ -232,6 +233,30 @@
                     </strong>
                     
                 </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Fee
+                    </span>
+
+                    <strong>
+                        P{{ selectedRequest.fee | number:'1.2-2'}}
+                    </strong>
+                </div>
+
+                <div class="information-item">
+
+                    <span>
+                        Payment Status
+                    </span>
+
+                    <span class="payment-status"
+                    [ngClass]="selectedRequest.paymentStatus?.toLowerCase()">
+                
+                        {{ selectedRequest.paymentStatus || 'Unpaid' }}
+                    </span>
+                </div>
                 
                 <div class="information-item">
 
@@ -240,7 +265,7 @@
                     </span>
 
                     <span class="status" 
-                    [ngClass]="selectedRequest.status">
+                    [ngClass]="selectedRequest.status.toLowerCase()">
 
                     {{ selectedRequest.status }}
 
@@ -269,32 +294,164 @@
                     </strong>
                 </div>
 
+                <div class="information-item full-width">
+
+                    <span>
+                        Admin Remarks
+                    </span>
+
+                    <strong *ngIf="selectedRequest.remarks">
+
+                        {{ selectedRequest.remarks }}
+                    </strong>
+
+                    <span class="no-remarks"
+                    *ngIf="!selectedRequest.remarks">
+
+                    No remarks yet.
+
+                    </span>
+                </div>
             </div>
 
         </div>
 
 
         <div class="modal-actions"
-        *ngIf="selectedRequest?.status === 'pending' ">
+        *ngIf="selectedRequest?.status === 'Pending' && !showRejectForm">
+
+        <button type="button" class="reject-button"
+        (click)="showRejectForm = true">
     
-            <button type="button" class="reject-button"
-            (click)="updateStatus(selectedRequest.id, 'rejected' )">
+            Reject Request
 
-                Reject Request
+        </button>
+
+        <button type="button" class="approve-button"
+        (click)="updateStatus(selectedRequest.id, 'Approved')">
+
+        Approve Request
+
+        </button>
+
+        </div>
+
+        <div class="rejection-section"
+        *ngIf="selectedRequest?.status === 'Pending' && showRejectForm">
+
+        <label>
+            Rejection Remarks
+        </label>
+
+        <textarea [(ngModel)]="rejectionRemarks" 
+        rows="4"
+        placeholder="Enter the reason for rejecting this request...">
+        </textarea>
+
+        <small>
+            Please provide a reason so the resident knows what needs to be corrected.
+        </small>
+
+        <div class="rejection-actions">
+
+            <button type="button"
+            class="cancel-button"
+            (click)="cancelReject()">
+
+            Cancel
 
             </button>
 
-            <button type="button" class="approve-button"
-            (click)="updateStatus(selectedRequest.id, 'approved')">
-        
-                Approve Request
-
-            </button>
+            <button type="button"
+            class="reject-button"
+            [disabled]="!rejectionRemarks.trim()"
+            (click)="rejectRequest()">
             
+            Confirm Rejection 
+
+            </button>
+
         </div>
-            </div>
-        </div>
-        </div>
+
     </div>
-     </div>
+    
+
+    <div class="model-actions"
+    *ngIf="selectedRequest?.status === 'Approved'
+    && selectedRequest?.paymentStatus !== 'Paid' ">
+
+
+    <button type="button" class="payment-button"
+    (click)="updatePaymentStatus(
+        selectedRequest.id,
+        'Paid'
+    )">
+
+    Mark as Paid
+
+    </button>
+        
+    </div>
+        
+
+    <div class="modal-actions"
+    *ngIf="selectedRequest?.status === 'Approved'
+    && selectedRequest?.paymentStatus === 'Paid'">
+
+    <button type="button" class="approve-button"
+    (click)="updateStatus(
+        selectedRequest.id,
+        'In Progress'
+    )">
+
+        Start Processing
+        
+    </button>
+
+</div>
+
+
+    <div class="modal-actions"
+    *ngIf="selectedRequest?.status === 'In Progress'">
+
+
+        <button type="button" class="approve-button"
+        (click)="updateStatus(
+            selectedRequest.id,
+            'Ready for Pickup'
+        )">
+
+        Ready for Pickup
+
+        </button>
+    </div>
+
+
+
+    <div class="modal-actions"
+    *ngIf="selectedRequest?.status === 'Ready for Pickup'">
+
+        <button type="button" class="approve-button"
+        (click)="updateStatus(
+            selectedRequest.id,
+            'Completed'
+        )">
+
+        Mark as Completed
+
+        </button>
+    </div>
+
+
+</div>
+        
+</div>
+      
+</div>
+   
+</div>
+    
+
+</div>
+
 </div>
