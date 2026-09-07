@@ -43,3 +43,17 @@
         </button>
     </div>
 </aside>
+
+<button type="button"
+class="menu-button"
+(click)="toggleSidebar()">
+
+    ☰
+
+</button>
+
+<div class="sidebar-overlay"
+*ngIf="isSidebarOpen"
+(click)="closeSidebar()">
+
+</div>

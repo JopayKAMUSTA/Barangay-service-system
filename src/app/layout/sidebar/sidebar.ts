@@ -13,6 +13,18 @@ export class Sidebar {
   private auth = inject(Auth);
   private router = inject(Router);
 
+  isSidebarOpen = false;
+
+  toggleSidebar()
+  {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar()
+  {
+    this.isSidebarOpen = false;
+  }
+
   async logout()
   {
 

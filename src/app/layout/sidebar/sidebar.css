@@ -12,11 +12,16 @@
     position: fixed;
     left: 0;
     top: 0;
+
+    z-index: 1000;
+    
 }
 
 .logo{
     padding: 25px 20px;
     border-bottom: 1px solid rgba(255,255,255,0.2);
+
+    position: relative;
 }
 
 .logo h2{
@@ -72,4 +77,138 @@ nav a.active{
 
     cursor: pointer;
     
+}
+
+
+.menu-button
+{
+    display: none;
+    position: fixed; 
+    top: 15px;
+    left: 15px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 8px;
+    background: #f57c00;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.close-sidebar
+{
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.sidebar-overlay
+{
+    display: none;
+}
+@media (max-width:900px)
+{
+    .sidebar
+    {
+        width: 220px;
+    }
+
+    .sidebar-open
+    {
+        transform: translateX(0);
+    }
+
+    .menu-button
+    {
+        display: block;
+    }
+
+    .close-sidebar
+    {
+        display: block;
+    }
+
+    .sidebar-overlay
+    {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 900;
+    }
+
+    .logo
+    {
+        padding: 20px;
+        padding-right: 50px;
+    }
+
+    .logo h2
+    {
+        font-size: 18px;
+    }
+
+    .logo p
+    {
+        font-size: 12px;
+    }
+}
+
+@media (max-width:600px)
+{
+    .main-content
+    {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .sidebar
+    {
+        width: 250px;
+
+        transition: translateX(-100%);
+    }
+
+    .sidebar.open
+    {
+        transform: translateX(0);
+    }
+
+    .logo
+    {
+        padding: 20px 18px;
+    }
+
+    .logo h2 
+    {
+        font-size: 18px;
+    }
+
+    .logo p 
+    {
+        font-size: 12px;
+    }
+
+    nav
+    {
+        padding: 12px 8px;
+    }
+
+    nav a 
+    {
+        padding: 13px 14px;
+    }
+
+    .logout
+    {
+        padding: 12px;
+    }
 }
