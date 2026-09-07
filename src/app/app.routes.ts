@@ -16,6 +16,7 @@ import { AdminLayout } from './layout/admin-layout/admin-layout';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { AdminDocumentType } from './admin-document-type/admin-document-type';
+import { AdminEarning } from './admin-earning/admin-earning';
 
 export const routes: Routes = [
     
@@ -71,6 +72,11 @@ export const routes: Routes = [
             {
                 path: 'admin-announcement',
                 component: AdminAnnouncement
+            },
+
+            {
+                path: 'admin-earning',
+                component: AdminEarning
             }
         ]
     },
