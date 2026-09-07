@@ -20,6 +20,7 @@ interface DocumentRequest
   paymentStatus:string;
 
   createdAt:any;
+  paidAt: any;
 }
 @Component({
   selector: 'app-admin-earning',

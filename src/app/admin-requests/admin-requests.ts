@@ -204,7 +204,9 @@ export class AdminRequests {
       await updateDoc(
         requestRef,
         {
-          paymentStatus: paymentStatus
+          paymentStatus: paymentStatus,
+
+          paidAt:new Date()
         }
       );
 
@@ -215,7 +217,8 @@ export class AdminRequests {
 
       this.selectedRequest = {
         ...this.selectedRequest,
-        paymentStatus:paymentStatus
+        paymentStatus:paymentStatus,
+        paidAt: new Date()
       };
     }
     catch(error)
