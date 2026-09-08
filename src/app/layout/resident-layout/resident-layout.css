@@ -4,3 +4,25 @@
     padding: 30px;
     box-sizing: border-box;
 }
+
+@media (max-width: 900px)
+{
+    .page-content
+    {
+        margin-left: 0;
+        padding: 30px 20px;
+
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px)
+{
+    .page-content
+    {
+        margin-left: 0;
+        padding: 20px 15px;
+        width: 100%;
+    }
+}

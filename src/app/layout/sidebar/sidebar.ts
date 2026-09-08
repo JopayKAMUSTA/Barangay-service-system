@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router} from '@angular/router';
 import { Auth, signOut } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [CommonModule,RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

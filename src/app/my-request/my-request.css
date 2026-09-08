@@ -112,20 +112,42 @@ td strong
     font-weight: 500;
 }
 
-@media (max-width: 700px)
+@media (max-width: 900px)
 {
     .request-page
     {
-        padding: 20px;
+        max-width: 900px;
+        padding: 25px;
+        
+    }
+    .page-header
+    {
+        text-align: center;
+    }
+}
+
+@media (max-width:700px)
+{
+    .request-page
+    {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 15px;
     }
 
     .request-card
     {
         padding: 15px;
+        border-radius: 12px;
+    }
+
+    .table-wrapper
+    {
+        overflow-x: auto;
     }
 
     th,td
     {
-        padding: 12px 10px;
+        padding: 12px 12px;
     }
 }
