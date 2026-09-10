@@ -1,26 +1,59 @@
 <div class="admin-dashboard">
 
-    <div class="page-header">
-        <div>
-            <h1>Dashboard</h1>
-            <p>Welcome to the MankilamEase</p>
-        </div>
+
+<div class="page-header">
+
+    <div>
+        <p class="page-label">
+            MANKILAMEASE
+        </p>
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            Welcome to the MankilamEase administration dashboard.
+        </p>
     </div>
 
-    <div class="stats">
+</div>
 
-        <div class="stat-card">
 
-            <h3>Total Requests</h3>
+<div class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-file-earmark-text"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <h3>
+                Total Requests
+            </h3>
 
             <p>
                 {{ totalRequests$ | async }}
             </p>
+
         </div>
 
-        <div class="stat-card">
+    </div>
 
-            <h3>Pending</h3>
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-clock"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <h3>
+                Pending
+            </h3>
 
             <p>
                 {{ pendingRequests$ | async }}
@@ -28,42 +61,116 @@
 
         </div>
 
-        <div class="stat-card">
+    </div>
 
-            <h3> Approved</h3>
 
-            <p>
-                {{ approvedRequests$ | async}}
-            </p>
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-content">
 
-            <h3>Rejected</h3>
-            
+            <h3>
+                Approved
+            </h3>
+
+            <p>
+                {{ approvedRequests$ | async }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-x-circle"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <h3>
+                Rejected
+            </h3>
+
             <p>
                 {{ rejectedRequests$ | async }}
             </p>
+
         </div>
+
     </div>
 
-    <div class="quick-actions">
+</div>
 
-        <h2>Quick Actions</h2>
 
-        <div class="action-grid">
+<div class="quick-actions">
 
-            <button routerLink="/admin-request">
-                Document Requests
-            </button>
+    <div class="section-header">
 
-            <button routerLink="/admin-resident">
-                Manage Residents
-            </button>
+        <div>
+            <h2>
+                Quick Actions
+            </h2>
 
-            <button routerLink="/admin-announcement">
-                Create Announcement
-            </button>
+            <p>
+                Manage the most important barangay services.
+            </p>
         </div>
+
     </div>
+
+
+    <div class="action-grid">
+
+        <button routerLink="/admin-request">
+
+            <i class="bi bi-file-earmark-text"></i>
+
+            <span>
+                <strong>Document Requests</strong>
+                <small>Review resident requests</small>
+            </span>
+
+            <i class="bi bi-arrow-right action-arrow"></i>
+
+        </button>
+
+
+        <button routerLink="/admin-resident">
+
+            <i class="bi bi-people"></i>
+
+            <span>
+                <strong>Manage Residents</strong>
+                <small>View and manage residents</small>
+            </span>
+
+            <i class="bi bi-arrow-right action-arrow"></i>
+
+        </button>
+
+
+        <button routerLink="/admin-announcement">
+
+            <i class="bi bi-megaphone"></i>
+
+            <span>
+                <strong>Create Announcement</strong>
+                <small>Post barangay announcements</small>
+            </span>
+
+            <i class="bi bi-arrow-right action-arrow"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+
 </div>
