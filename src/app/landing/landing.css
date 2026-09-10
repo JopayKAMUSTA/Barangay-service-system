@@ -4,6 +4,25 @@
 }
 
 
+html,
+body
+{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+*
+{
+    box-sizing: border-box;
+}
+
+img
+{
+    max-width: 100%;
+}
+
+
 @keyframes fadeUp
 {
     from 
@@ -983,25 +1002,21 @@
     line-height: 1.6;
 }
 
-
-
-
-/* =========================================================
-   RESPONSIVE DESIGN
-   Desktop design remains unchanged above this section.
-   ========================================================= */
-
-
-/* =========================================================
-   TABLET
-   901px - 1100px
-   ========================================================= */
-
 @media (max-width: 1100px)
 {
+    .navbar-container,
+    .hero-container,
+    .section-container,
+    .footer-container,
+    .footer-bottom
+    {
+        max-width: 100%;
+    }
+
     .navbar-container
     {
-        padding: 18px 25px;
+        padding-left: 25px;
+        padding-right: 25px;
     }
 
     .hero-container
@@ -1018,12 +1033,12 @@
 
     .services-grid
     {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .steps-container
     {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer-container
@@ -1033,21 +1048,14 @@
 }
 
 
-/* =========================================================
-   TABLET / SMALL LAPTOP
-   900px and below
-   ========================================================= */
-
 @media (max-width: 900px)
 {
-    /* -------------------------
-       NAVBAR
-       ------------------------- */
+ 
 
     .navbar-container
     {
+        width: 100%;
         padding: 18px 25px;
-        gap: 20px;
     }
 
     .nav-link
@@ -1055,41 +1063,36 @@
         display: none;
     }
 
-    .brand-logo
-    {
-        width: 50px;
-        height: 50px;
-    }
 
-
-    /* -------------------------
-       HERO
-       ------------------------- */
 
     .hero
     {
         min-height: auto;
+        width: 100%;
     }
 
     .hero-container
     {
-        grid-template-columns: 1fr;
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
         padding: 130px 25px 70px;
         gap: 45px;
     }
 
     .hero-content
     {
+        width: 100%;
         text-align: center;
     }
 
     .hero-content h1
     {
-        font-size: 44px;
+        font-size: clamp(38px, 6vw, 44px);
     }
 
     .hero-description
     {
+        width: 100%;
         max-width: 650px;
         margin-left: auto;
         margin-right: auto;
@@ -1108,23 +1111,23 @@
     }
 
 
-    /* -------------------------
-       ABOUT
-       ------------------------- */
+  
 
     .about-section
     {
+        width: 100%;
         padding: 75px 25px;
     }
 
     .about-grid
     {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 45px;
     }
 
     .about-content
     {
+        width: 100%;
         max-width: 700px;
     }
 
@@ -1135,218 +1138,209 @@
 
     .about-card
     {
-        max-width: 650px;
         width: 100%;
-        box-sizing: border-box;
+        max-width: 650px;
         margin: 0 auto;
     }
 
 
-    /* -------------------------
-       SERVICES
-       ------------------------- */
+  
 
     .services-section
     {
+        width: 100%;
         padding: 75px 25px;
-    }
-
-    .section-heading h2
-    {
-        font-size: 34px;
     }
 
     .services-grid
     {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .service-card
+    {
+        min-width: 0;
     }
 
 
-    /* -------------------------
-       HOW IT WORKS
-       ------------------------- */
+   
 
     .how-section
     {
+        width: 100%;
         padding: 75px 25px;
     }
 
     .steps-container
     {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .step-card
+    {
+        min-width: 0;
     }
 
 
-    /* -------------------------
-       CONTACT
-       ------------------------- */
+    
 
     .contact-section
     {
+        width: 100%;
         padding: 75px 25px;
     }
 
     .contact-grid
     {
-        grid-template-columns: 1fr;
-        gap: 25px;
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .contact-info
-    {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
+    .contact-info,
     .contact-card
     {
-        min-height: 280px;
-        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
     }
 
 
-    /* -------------------------
-       FOOTER
-       ------------------------- */
+   
 
     .footer
     {
+        width: 100%;
         padding: 55px 25px 0;
     }
 
     .footer-container
     {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 35px;
-    }
-
-    .footer-brand
-    {
-        max-width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer-bottom
     {
         flex-direction: column;
         gap: 8px;
-        margin-top: 40px;
     }
 }
 
 
-/* =========================================================
-   MOBILE
-   600px and below
-   ========================================================= */
-
 @media (max-width: 600px)
 {
-    /* -------------------------
-       NAVBAR
-       ------------------------- */
+
 
     .navbar-container
     {
-        padding: 14px 15px;
-        gap: 10px;
+        width: 100%;
+        padding: 12px 15px;
+        gap: 8px;
     }
 
     .brand
     {
-        gap: 8px;
         min-width: 0;
+        gap: 7px;
     }
 
     .brand-logo
     {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
     }
 
     .brand-title
     {
-        font-size: 16px;
+        font-size: 15px;
         white-space: nowrap;
     }
 
     .brand-subtitle
     {
-        font-size: 9px;
+        font-size: 8px;
+        white-space: nowrap;
     }
 
     .nav-button
     {
-        gap: 5px;
         flex-shrink: 0;
+        gap: 5px;
     }
 
     .login-button,
     .register-button
     {
-        padding: 8px 10px;
-        font-size: 11px;
+        padding: 7px 9px;
+        font-size: 10px;
         white-space: nowrap;
     }
 
 
-    /* -------------------------
-       HERO
-       ------------------------- */
+   
+
 
     .hero-container
     {
-        padding: 115px 15px 55px;
+        width: 100%;
+        padding: 105px 15px 50px;
         gap: 35px;
+    }
+
+    .hero-content
+    {
+        width: 100%;
     }
 
     .hero-label
     {
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 1.5px;
     }
 
     .hero-content h1
     {
-        font-size: 35px;
+        width: 100%;
+        font-size: clamp(29px, 8vw, 35px);
         line-height: 1.15;
     }
 
     .hero-description
     {
-        margin: 20px auto;
-        font-size: 14px;
+        width: 100%;
+        max-width: 100%;
+        margin: 18px auto;
+        font-size: 13px;
         line-height: 1.6;
     }
 
     .hero-button
     {
-        flex-direction: column;
         width: 100%;
-        gap: 10px;
+        flex-direction: column;
+        gap: 9px;
     }
 
     .primary-button,
     .secondary-button
     {
         width: 100%;
-        box-sizing: border-box;
+        min-width: 0;
         text-align: center;
-        padding: 12px 18px;
+        padding: 12px 15px;
     }
 
 
-    /* -------------------------
-       HERO CARD
-       ------------------------- */
+  
 
     .hero-card
     {
-        border-radius: 12px;
+        width: 100%;
+        max-width: 100%;
     }
 
     .hero-card-content
     {
-        padding: 25px 20px;
+        width: 100%;
+        padding: 23px 18px;
     }
 
     .hero-card-icon
@@ -1364,142 +1358,173 @@
 
     .hero-card h3
     {
-        font-size: 19px;
+        font-size: 18px;
     }
 
-    .hero-card-row
+    .hero-card p
     {
         font-size: 12px;
     }
 
+    .hero-card-row
+    {
+        width: 100%;
+        font-size: 11px;
+        gap: 10px;
+    }
 
-    /* -------------------------
-       GENERAL SECTIONS
-       ------------------------- */
+    .hero-card-row span
+    {
+        min-width: 0;
+    }
+
+
+  
 
     .section-container
     {
         width: 100%;
-        box-sizing: border-box;
+        max-width: 100%;
     }
 
     .section-heading
     {
+        width: 100%;
         margin-bottom: 35px;
     }
 
     .section-heading h2
     {
-        font-size: 28px;
+        font-size: clamp(25px, 7vw, 29px);
     }
 
     .section-heading > p:last-child
     {
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
 
-    /* -------------------------
-       ABOUT
-       ------------------------- */
 
     .about-section
     {
+        width: 100%;
         padding: 60px 15px;
     }
 
     .about-grid
     {
+        width: 100%;
         gap: 35px;
+    }
+
+    .about-content
+    {
+        width: 100%;
     }
 
     .about-content h2
     {
-        font-size: 28px;
+        font-size: clamp(25px, 7vw, 29px);
     }
 
     .about-content > p:not(.section-label)
     {
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.7;
     }
 
     .about-card
     {
-        padding: 25px 20px;
+        width: 100%;
+        padding: 23px 18px;
     }
 
     .about-feature
     {
+        width: 100%;
         gap: 12px;
         padding: 15px 0;
+    }
+
+    .about-feature > div
+    {
+        min-width: 0;
+    }
+
+    .about-feature h4
+    {
+        font-size: 15px;
     }
 
     .about-feature p
     {
         font-size: 12px;
+        line-height: 1.5;
     }
 
 
-    /* -------------------------
-       SERVICES
-       ------------------------- */
+    
 
     .services-section
     {
+        width: 100%;
         padding: 60px 15px;
     }
 
     .services-grid
     {
-        grid-template-columns: 1fr;
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
         gap: 15px;
     }
 
     .service-card
     {
-        padding: 22px;
+        width: 100%;
+        min-width: 0;
+        padding: 21px;
     }
 
     .service-card p
     {
         min-height: auto;
         font-size: 13px;
+        line-height: 1.6;
     }
 
 
-    /* -------------------------
-       HOW IT WORKS
-       ------------------------- */
+ 
 
     .how-section
     {
+        width: 100%;
         padding: 60px 15px;
     }
 
     .steps-container
     {
-        grid-template-columns: 1fr;
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
         gap: 15px;
         padding: 0;
     }
 
     .step-card
     {
-        padding: 25px 20px;
+        width: 100%;
+        min-width: 0;
+        padding: 23px 18px;
     }
 
-    .step-number
+    .step-content
     {
-        width: 42px;
-        height: 42px;
-        margin-bottom: 16px;
+        min-width: 0;
     }
 
     .step-content h3
     {
-        font-size: 17px;
+        font-size: 16px;
     }
 
     .step-content p
@@ -1509,52 +1534,62 @@
     }
 
 
-    /* -------------------------
-       CONTACT
-       ------------------------- */
+    
 
     .contact-section
     {
+        width: 100%;
         padding: 60px 15px;
+    }
+
+    .contact-header
+    {
+        width: 100%;
     }
 
     .contact-header h2
     {
-        font-size: 28px;
+        font-size: clamp(25px, 7vw, 29px);
     }
 
     .contact-header > p
     {
-        font-size: 14px;
+        width: 100%;
+        font-size: 13px;
         line-height: 1.6;
     }
 
     .contact-grid
     {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
         gap: 15px;
     }
 
     .contact-info
     {
-        padding: 20px;
+        width: 100%;
+        padding: 20px 18px;
     }
 
     .contact-item
     {
+        width: 100%;
         gap: 12px;
-        padding: 17px 0;
+        padding: 16px 0;
     }
 
     .contact-icon
     {
         width: 42px;
         height: 42px;
+        flex-shrink: 0;
         align-items: center;
     }
 
-    .contact-icon i
+    .contact-item > div:last-child
     {
-        font-size: 20px;
+        min-width: 0;
     }
 
     .contact-item h3
@@ -1565,140 +1600,174 @@
     .contact-item p
     {
         font-size: 12px;
+        line-height: 1.5;
     }
 
     .contact-card
     {
+        width: 100%;
         min-height: auto;
-        padding: 30px 25px;
+        padding: 28px 22px;
     }
 
     .contact-card h3
     {
-        font-size: 23px;
+        font-size: 22px;
     }
 
     .contact-card p
     {
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
 
-    /* -------------------------
-       FOOTER
-       ------------------------- */
-
+  
     .footer
     {
+        width: 100%;
         padding: 45px 15px 0;
     }
 
     .footer-container
     {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px 20px;
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px 15px;
     }
 
     .footer-brand
     {
+        width: 100%;
         grid-column: 1 / -1;
     }
 
     .footer-links
     {
-        gap: 8px;
+        min-width: 0;
     }
 
     .footer-links h3
     {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .footer-links a
     {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .footer-bottom
     {
-        padding: 18px 0;
-        margin-top: 35px;
+        width: 100%;
         text-align: center;
     }
 
     .footer-bottom p
     {
-        font-size: 11px;
+        font-size: 10px;
+        line-height: 1.5;
     }
 }
 
 
-/* =========================================================
-   VERY SMALL PHONES
-   400px and below
-   ========================================================= */
 
 @media (max-width: 400px)
 {
+    
+
     .navbar-container
     {
-        padding: 12px;
+        padding: 10px 10px;
+    }
+
+    .brand
+    {
+        gap: 5px;
     }
 
     .brand-logo
     {
-        width: 38px;
-        height: 38px;
+        width: 35px;
+        height: 35px;
     }
 
     .brand-title
     {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .brand-subtitle
     {
-        font-size: 8px;
+        font-size: 7px;
     }
 
     .login-button,
     .register-button
     {
-        padding: 7px 8px;
-        font-size: 10px;
+        padding: 6px 7px;
+        font-size: 9px;
     }
+
+
+  
 
     .hero-container
     {
-        padding: 105px 12px 45px;
+        padding: 95px 12px 40px;
     }
 
     .hero-content h1
     {
-        font-size: 30px;
+        font-size: 29px;
     }
 
     .hero-description
     {
-        font-size: 13px;
+        font-size: 12px;
+    }
+
+    .hero-card-content
+    {
+        padding: 20px 15px;
+    }
+
+    .hero-card-row
+    {
+        font-size: 10px;
+    }
+
+
+    
+
+    .about-section,
+    .services-section,
+    .how-section,
+    .contact-section
+    {
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     .section-heading h2,
     .about-content h2,
     .contact-header h2
     {
-        font-size: 25px;
+        font-size: 24px;
     }
 
-    .hero-card-content
+
+
+    .footer
     {
-        padding: 22px 17px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     .footer-container
     {
         grid-template-columns: 1fr;
+        gap: 25px;
     }
 
     .footer-brand
@@ -1706,3 +1775,4 @@
         grid-column: auto;
     }
 }
+
