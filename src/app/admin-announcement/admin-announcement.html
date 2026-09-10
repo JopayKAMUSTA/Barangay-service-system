@@ -1,74 +1,200 @@
-<div class="announcement-container">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <h2>Announcements</h2>
+<div class="announcement-page">
 
-    <div class="announcement-form">
+    <div class="page-header">
 
-        <h3> Create Announcement</h3>
+        <div>
+            <span class="page-label">
+                ADMINISTRATION
+            </span>
 
-        <label> Title </label>
+            <h1>Announcements</h1>
 
-        <input type="text"
-        [(ngModel)]="title"
-        placeholder="Enter announcement title">
+            <p>
+                Create and manage announcements for MankilamEase residents.
+            </p>
+        </div>
 
-        <label> Message </label>
-
-        <textarea [(ngModel)]="message"
-        placeholder="Enter announcement message">
-        </textarea>
-
-        <button type="button"
-        (click)="createAnnouncement()">
-        Post Announcement
-        </button>
-
-        <p *ngIf="statusMessage">
-            {{ statusMessage }}
-        </p>
     </div>
 
 
-    <div class="announcement-list">
 
-        <h3>Existing Announcement</h3>
+    <div class="announcement-form-card">
 
-        <p *ngIf="announcements$ | async as announcements">
+        <div class="card-header">
 
-            @if (announcements.length === 0){
-                No announcements found.
-            }
-        </p>
-
-        @for (
-            announcement of announcements$ | async;
-            track announcement.id
-
-        ){
-
-            <div class="announcement-card">
-
-                <h3>
-                    {{ announcement.title }}
-                </h3>
+            <div>
+                <h2>Create Announcement</h2>
 
                 <p>
-                    {{ announcement.message }}
+                    Share important information with residents.
                 </p>
-
-                <small>
-                    Posted:
-                    {{ announcement.createdAt?.toDate() | date:'medium'}}
-                </small>
-
-                <br>
-                
-                <button
-                type="button"
-                (click)="deleteAnnouncement(announcement.id)">
-                Delete
-                </button>
             </div>
+
+            <div class="header-icon">
+                <i class="bi bi-megaphone"></i>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="title">
+                Title
+            </label>
+
+            <input
+                id="title"
+                type="text"
+                [(ngModel)]="title"
+                placeholder="Enter announcement title"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="message">
+                Message
+            </label>
+
+            <textarea
+                id="message"
+                [(ngModel)]="message"
+                placeholder="Enter announcement message"
+                rows="5">
+            </textarea>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="post-button"
+            (click)="createAnnouncement()">
+
+            <i class="bi bi-send"></i>
+
+            Post Announcement
+
+        </button>
+
+
+        @if (statusMessage) {
+
+            <div class="status-message">
+
+                <i class="bi bi-check-circle"></i>
+
+                {{ statusMessage }}
+
+            </div>
+
         }
+
     </div>
+
+    <div class="announcement-list-card">
+
+        <div class="card-header">
+
+            <div>
+                <h2>Existing Announcements</h2>
+
+                <p>
+                    View and manage announcements currently posted.
+                </p>
+            </div>
+
+            <div class="header-icon">
+                <i class="bi bi-list-ul"></i>
+            </div>
+
+        </div>
+
+
+        @if (announcements$ | async; as announcements) {
+
+            @if (announcements.length === 0) {
+
+                <div class="empty-state">
+
+                    <i class="bi bi-megaphone"></i>
+
+                    <h3>No Announcements</h3>
+
+                    <p>
+                        There are currently no announcements posted.
+                    </p>
+
+                </div>
+
+            } @else {
+
+                <div class="announcement-list">
+
+                    @for (
+                        announcement of announcements;
+                        track announcement.id
+                    ) {
+
+                        <div class="announcement-card">
+
+                            <div class="announcement-icon">
+
+                                <i class="bi bi-megaphone-fill"></i>
+
+                            </div>
+
+
+                            <div class="announcement-content">
+
+                                <h3>
+                                    {{ announcement.title }}
+                                </h3>
+
+                                <p>
+                                    {{ announcement.message }}
+                                </p>
+
+                                <small>
+
+                                    <i class="bi bi-calendar3"></i>
+
+                                    Posted:
+                                    {{ announcement.createdAt?.toDate() | date:'medium' }}
+
+                                </small>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="delete-button"
+                                (click)="deleteAnnouncement(announcement.id)">
+
+                                <i class="bi bi-trash"></i>
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+
+        }
+
+    </div>
+
 </div>

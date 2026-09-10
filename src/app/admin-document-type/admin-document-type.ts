@@ -1,27 +1,40 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Firestore, collection, collectionData, serverTimestamp, addDoc, doc , updateDoc, deleteDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  serverTimestamp,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc
+} from '@angular/fire/firestore';
+
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
-interface DocumentType
-{
-  id:string;
-  name:string;
-  description:string;
-  fee:number;
-  status:string;
+
+interface DocumentType {
+  id: string;
+  name: string;
+  description: string;
+  fee: number;
+  status: string;
 }
+
 
 @Component({
   selector: 'app-admin-document-type',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-document-type.html',
   styleUrl: './admin-document-type.css',
 })
-export class AdminDocumentType {
-  editingDocumentId: string | null = null;
 
+export class AdminDocumentType {
+
+  editingDocumentId: string | null = null;
 
   private firestore = inject(Firestore);
 
@@ -34,196 +47,530 @@ export class AdminDocumentType {
   documentFee = 0;
   documentStatus = 'Active';
 
-  constructor() 
-  {
+
+  constructor() {
+
     const documentTypesRef = collection(
       this.firestore,
       'documentTypes'
     );
 
+
     this.documentTypes$ = collectionData(
       documentTypesRef,
       {
         idField: 'id'
-      } 
-    )as Observable<DocumentType[]>;
-
-    this.documentTypes$.subscribe 
-    ({
-      next: (documents) => 
-      {
-        console.log('Document types loaded: ', documents);
-      },
-      error: (error) => 
-      {
-        console.error('Error loading document types: ', error);
       }
+
+    ) as Observable<DocumentType[]>;
+
+
+    this.documentTypes$.subscribe({
+
+      next: (documents) => {
+
+        console.log(
+          'Document types loaded:',
+          documents
+        );
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error loading document types:',
+          error
+        );
+
+      }
+
     });
 
   }
 
-async deleteDocumentType(document: DocumentType)
-{
-  const confirmed = confirm(
-    `Are you sure you want to delete "${document.name}"?`
-  );
 
-  if(!confirmed)
-  {
-    return;
+
+
+  async deleteDocumentType(
+    document: DocumentType
+  ) {
+
+    const result = await Swal.fire({
+
+      icon: 'warning',
+
+      title: 'Delete Document Type?',
+
+      text: `Are you sure you want to delete "${document.name}"?`,
+
+      showCancelButton: true,
+
+      confirmButtonText: 'Yes, Delete',
+
+      cancelButtonText: 'Cancel',
+
+      confirmButtonColor: '#d33',
+
+      cancelButtonColor: '#6c757d'
+
+    });
+
+
+    if (!result.isConfirmed) {
+
+      return;
+
+    }
+
+
+    try {
+
+      Swal.fire({
+
+        title: 'Deleting...',
+
+        text: 'Please wait.',
+
+        allowOutsideClick: false,
+
+        allowEscapeKey: false,
+
+        showConfirmButton: false,
+
+        didOpen: () => {
+
+          Swal.showLoading();
+
+        }
+
+      });
+
+
+      const documentRef = doc(
+        this.firestore,
+        'documentTypes',
+        document.id
+      );
+
+
+      await deleteDoc(documentRef);
+
+
+      await Swal.fire({
+
+        icon: 'success',
+
+        title: 'Deleted!',
+
+        text: 'Document Type deleted successfully.',
+
+        confirmButtonColor: '#f57c00',
+
+        timer: 1500,
+
+        timerProgressBar: true,
+
+        showConfirmButton: false
+
+      });
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Error deleting document type:',
+        error
+      );
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title: 'Delete Failed',
+
+        text: 'Failed to delete document type.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+    }
+
   }
 
-  try
-  {
-    const documentRef = doc(
-      this.firestore,
-      'documentTypes',
-      document.id
-    );
 
-    await deleteDoc(documentRef);
+ 
 
-    alert('Document Type deleted successfully!');
-  }
-  catch (error)
-  {
-    console.error('Error deleting document type: ',error);
+  async updateDocumentType() {
 
-    alert('Failed to delete document type.');
-  }
-}
+    if (!this.editingDocumentId) {
 
-
-
-  async updateDocumentType()
-  {
-    if(!this.editingDocumentId)
-    {
       return;
+
     }
 
-    if(!this.documentName.trim())
-    {
-      alert('Please enter a document name.');
+
+    if (!this.documentName.trim()) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Missing Document Name',
+
+        text: 'Please enter a document name.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
       return;
-    }
-    
-    if(!this.documentDescription.trim())
-    {
-      alert('Please enter a description.');
-      return;
+
     }
 
-    if(this.documentFee < 0)
-    {
-      alert('Fee cannot be negative.');
+
+    if (!this.documentDescription.trim()) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Missing Description',
+
+        text: 'Please enter a description.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
       return;
+
     }
 
-    try
-    {
+
+    if (this.documentFee < 0) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Invalid Fee',
+
+        text: 'Fee cannot be negative.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+      return;
+
+    }
+
+
+    try {
+
+      Swal.fire({
+
+        title: 'Updating Document Type',
+
+        text: 'Please wait...',
+
+        allowOutsideClick: false,
+
+        allowEscapeKey: false,
+
+        showConfirmButton: false,
+
+        didOpen: () => {
+
+          Swal.showLoading();
+
+        }
+
+      });
+
+
       const documentRef = doc(
         this.firestore,
         'documentTypes',
         this.editingDocumentId
       );
 
-      await updateDoc(documentRef , {
-        name: this.documentName.trim(),
-        description: this.documentDescription.trim(),
-        fee: Number(this.documentFee),
-        status: this.documentStatus
+
+      await updateDoc(
+        documentRef,
+        {
+          name: this.documentName.trim(),
+
+          description:
+            this.documentDescription.trim(),
+
+          fee: Number(this.documentFee),
+
+          status: this.documentStatus
+        }
+      );
+
+
+      await Swal.fire({
+
+        icon: 'success',
+
+        title: 'Updated Successfully',
+
+        text: 'Document Type has been updated.',
+
+        confirmButtonColor: '#f57c00',
+
+        timer: 1500,
+
+        timerProgressBar: true,
+
+        showConfirmButton: false
+
       });
 
-      alert('Document Type updated successfully');
 
       this.closeModal();
-    }
-    catch (error)
-    {
-      console.error('Error updating document type: ', error);
 
-      alert('Failed to update document type.');
     }
+
+    catch (error) {
+
+      console.error(
+        'Error updating document type:',
+        error
+      );
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title: 'Update Failed',
+
+        text: 'Failed to update document type.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+    }
+
   }
+
+
+
+
+  openModal() {
+
+    this.showModal = true;
+
+  }
+
 
   
 
-  openModal()
-  {
-    this.showModal = true;
-  }
+  editDocumentType(
+    document: DocumentType
+  ) {
 
-  editDocumentType(document: DocumentType)
-  {
     this.editingDocumentId = document.id;
 
     this.documentName = document.name;
-    this.documentDescription = document.description;
+
+    this.documentDescription =
+      document.description;
+
     this.documentFee = document.fee;
+
     this.documentStatus = document.status;
 
     this.showModal = true;
+
   }
 
-  closeModal()
-  {
+
+
+
+  closeModal() {
+
     this.showModal = false;
 
     this.editingDocumentId = null;
 
     this.documentName = '';
-    this.documentDescription= '' ;
+
+    this.documentDescription = '';
+
     this.documentFee = 0;
+
     this.documentStatus = 'Active';
+
   }
-    
-  async addDocumentType()
-  {
-    if(!this.documentName.trim())
-    {
-      alert('Please enter a document name. ');
+
+
+
+
+  async addDocumentType() {
+
+    if (!this.documentName.trim()) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Missing Document Name',
+
+        text: 'Please enter a document name.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
       return;
+
     }
 
-    if(!this.documentDescription.trim())
-    {
-      alert('Please enter a description')
+
+    if (!this.documentDescription.trim()) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Missing Description',
+
+        text: 'Please enter a description.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
       return;
+
     }
 
-    if(this.documentFee < 0)
-    {
-      alert('Fee cannot be negative');
+
+    if (this.documentFee < 0) {
+
+      Swal.fire({
+
+        icon: 'warning',
+
+        title: 'Invalid Fee',
+
+        text: 'Fee cannot be negative.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
       return;
+
     }
 
-    try
-    {
-      const documentTypesRef = collection
-      (
+
+    try {
+
+      Swal.fire({
+
+        title: 'Adding Document Type',
+
+        text: 'Please wait...',
+
+        allowOutsideClick: false,
+
+        allowEscapeKey: false,
+
+        showConfirmButton: false,
+
+        didOpen: () => {
+
+          Swal.showLoading();
+
+        }
+
+      });
+
+
+      const documentTypesRef = collection(
         this.firestore,
         'documentTypes'
       );
 
-      await addDoc(documentTypesRef, {
-        name: this.documentName.trim(),
-        description: this.documentDescription.trim(),
-        fee: Number(this.documentFee),
-        status: this.documentStatus,
-        createdAt: serverTimestamp()
+
+      await addDoc(
+        documentTypesRef,
+        {
+
+          name:
+            this.documentName.trim(),
+
+          description:
+            this.documentDescription.trim(),
+
+          fee:
+            Number(this.documentFee),
+
+          status:
+            this.documentStatus,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      await Swal.fire({
+
+        icon: 'success',
+
+        title: 'Document Type Added',
+
+        text: 'Document Type added successfully.',
+
+        confirmButtonColor: '#f57c00',
+
+        timer: 1500,
+
+        timerProgressBar: true,
+
+        showConfirmButton: false
+
       });
 
-      alert('Document Type added successfully! ')
 
       this.closeModal();
-    }
-    catch (error)
-    {
-        console.error('Error adding document type: ', error);
 
-        alert('Failed to add document type. ');
     }
+
+    catch (error) {
+
+      console.error(
+        'Error adding document type:',
+        error
+      );
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title: 'Add Failed',
+
+        text: 'Failed to add document type.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+    }
+
   }
-    
+
 }
