@@ -1,38 +1,81 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <div class="dashboard-page">
 
-    <div class="page-header">
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            Welcome, {{ firstname || 'resident' }}
+        </h1>
+
+        <p>
+            Manage your barangay services and requests.
+        </p>
+
+    </div>
+
+
+    <a
+        routerLink="/document-request"
+        class="request-button">
+
+        <i class="bi bi-file-earmark-plus"></i>
+
+        Request a Document
+
+    </a>
+
+</div>
+
+
+
+
+<div class="dashboard-cards">
+
+
+    <a
+        routerLink="/document-request"
+        class="dashboard-card">
+
+        <div class="card-icon">
+
+            <i class="bi bi-file-earmark-plus"></i>
+
+        </div>
 
         <div>
-            <h1>
-                Welcome. {{ firstname || 'resident' }}
-            </h1>
+
+            <h3>
+                Request Document
+            </h3>
 
             <p>
-                Manage your barangay services and requests
+                Submit a new barangay document request.
             </p>
-        </div> 
-         <a routeLink="/document-request" class="request-button">
-        Request a Document
-        </a>
-     </div>
 
-     <div class="dashboard-cards">
-
-        <div class="dashboard-card">
-            <div>
-                <h3>
-                    Request Document
-                </h3>
-
-                <p>
-                    Submit a new barangay document request.
-                </p>
-            </div>
         </div>
-        
-        <div class="dashboard-card">
-        <div class="card-icon"></div>
+
+    </a>
+
+
+
+
+    <a
+        routerLink="/my-request"
+        class="dashboard-card">
+
+        <div class="card-icon">
+
+            <i class="bi bi-clock-history"></i>
+
+        </div>
+
         <div>
+
             <h3>
                 My Requests
             </h3>
@@ -40,12 +83,25 @@
             <p>
                 Check the status of your requests.
             </p>
-        </div>
-     </div>
 
-     <div class="dashboard-card">
-        <div class="card-icon">!</div>
+        </div>
+
+    </a>
+
+
+
+    <a
+        routerLink="/announcement"
+        class="dashboard-card">
+
+        <div class="card-icon">
+
+            <i class="bi bi-megaphone"></i>
+
+        </div>
+
         <div>
+
             <h3>
                 Announcements
             </h3>
@@ -53,49 +109,125 @@
             <p>
                 View the latest barangay announcements.
             </p>
+
         </div>
-     </div>
+
+    </a>
+
 </div>
-     <div class="dashboard-section">
-        <div class="section-header">
-            <div>
-                <h2>
-                    Recent Requests
-                </h2>
 
-                <p>
-                    Your latest document requests wwill appear here.
-                </p>
-            </div>
 
-            <a routerLink="/my-request">View All</a>
-        </div>
 
-        <div *ngIf="loading" class="empty-state">
+
+<div class="dashboard-section">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Recent Requests
+            </h2>
+
             <p>
-                Loading your requests...
-            </p>
-        </div>
-        
-        <div *ngIf="!loading && recentRequests.length === 0" class="empty-state">
-            <h3>
-                No Recent Requests
-            </h3>
-            <p>
-                You haven't submitted any document requests yet.
+                Your latest document requests will appear here.
             </p>
 
-            <a routerLink="/document-request" class="secondary-button">
-                Make a Request
-            </a>
         </div>
-        <div class="requests-list" *ngIf="!loading && recentRequests.length > 0">
 
-            <div class="request-item" *ngFor="let request of recentRequests">
 
-                <div class="request-info">
+        <a routerLink="/my-request">
 
-                    <h3> 
+            View All
+
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+
+
+
+    <div
+        *ngIf="loading"
+        class="empty-state">
+
+        <div class="empty-icon">
+
+            <i class="bi bi-arrow-repeat loading-icon"></i>
+
+        </div>
+
+        <h3>
+            Loading Requests
+        </h3>
+
+        <p>
+            Please wait while we load your requests.
+        </p>
+
+    </div>
+
+
+
+
+    <div
+        *ngIf="!loading && recentRequests.length === 0"
+        class="empty-state">
+
+        <div class="empty-icon">
+
+            <i class="bi bi-file-earmark-text"></i>
+
+        </div>
+
+        <h3>
+            No Recent Requests
+        </h3>
+
+        <p>
+            You haven't submitted any document requests yet.
+        </p>
+
+
+        <a
+            routerLink="/document-request"
+            class="secondary-button">
+
+            <i class="bi bi-plus-lg"></i>
+
+            Make a Request
+
+        </a>
+
+    </div>
+
+
+
+    <div
+        class="requests-list"
+        *ngIf="!loading && recentRequests.length > 0">
+
+
+        <div
+            class="request-item"
+            *ngFor="let request of recentRequests">
+
+
+            <div class="request-info">
+
+                <div class="request-icon">
+
+                    <i class="bi bi-file-earmark-text"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
                         {{ request.documentType }}
                     </h3>
 
@@ -104,14 +236,34 @@
                     </p>
 
                     <small>
-                        {{ request.createdAt?.toDate() | date:'medium'}}
+
+                        <i class="bi bi-calendar3"></i>
+
+                        {{ request.createdAt?.toDate() | date:'medium' }}
+
                     </small>
+
                 </div>
 
-                <span class="status" [ngClass]="request.status">
-
-                    {{ request.status }}
-                </span>
             </div>
+
+
+         
+
+            <span
+                class="status"
+                [ngClass]="getStatusClass(request.status)">
+
+                {{ request.status }}
+
+            </span>
+
+
         </div>
-     </div>
+
+    </div>
+
+</div>
+
+
+</div>
