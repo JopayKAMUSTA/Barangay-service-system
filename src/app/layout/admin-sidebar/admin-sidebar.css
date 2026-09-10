@@ -1,127 +1,348 @@
-.admin-sidebar{
 
+.admin-sidebar {
     width: 250px;
     height: 100vh;
 
     background: #f57c00;
     color: white;
 
-    position: fixed;
-    top: 0;
-    left: 0;
-
     display: flex;
     flex-direction: column;
 
-    box-sizing: border-box;
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    z-index: 1000;
+
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.08);
+
+    font-family: "Segoe UI", sans-serif;
 }
 
-.sidebar-header{
+
+
+.sidebar-header {
+    padding: 20px;
+
     display: flex;
     align-items: center;
 
     gap: 12px;
 
-    padding: 25px 20px;
-
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.barangay-logo{
-    width: 45px;
-    height: 45px;
 
-    border-radius: 50%;
 
-    background: white;
-    color: #f57c00;
+.barangay-logo {
+    width: 55px;
+    height: 55px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-weight: bold;
-    font-size: 16px;
+    flex-shrink: 0;
 }
 
-.sidebar-header h2{
+
+
+.barangay-logo img {
+    width: 55px;
+    height: 55px;
+
+    object-fit: contain;
+}
+
+
+.sidebar-brand {
+    min-width: 0;
+}
+
+.sidebar-brand h2 {
     margin: 0;
 
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: 700;
+
+    white-space: nowrap;
 }
 
-.sidebar-header span{
-    font-size: 12px;
+.sidebar-brand span {
+    display: block;
 
-    opacity: 0.8;
-}
+    margin-top: 4px;
 
-.sidebar-menu{
-    padding: 20px 12px;
-}
-
-.menu-title{
     font-size: 11px;
 
-    margin: 0 10px 10px;
+    white-space: nowrap;
 
-    opacity: 0.7;
-
-    letter-spacing: 1px;
+    opacity: 0.9;
 }
 
-.sidebar-menu a{
-    display: block;
+
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px 10px;
+}
+
+
+
+.sidebar-menu a {
+    color: white;
+
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
 
     padding: 13px 15px;
 
     margin-bottom: 5px;
 
-    border-radius: 7px;
+    border-radius: 8px;
 
-    color: white;
+    font-size: 14px;
+    font-weight: 400;
 
-    text-decoration: none;
-    
-    transition: 0.2s;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.sidebar-menu a:hover{
+
+
+.sidebar-menu a i {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 16px;
+
+    flex-shrink: 0;
+}
+
+
+
+.sidebar-menu a span {
+    flex: 1;
+}
+
+
+.sidebar-menu a:hover {
     background: rgba(255, 255, 255, 0.15);
+
+    transform: translateX(3px);
 }
 
-.sidebar-menu a.active{
+
+.sidebar-menu a.active {
     background: white;
 
     color: #f57c00;
 
     font-weight: 600;
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
+
+
+
+.sidebar-menu a.active i {
+    color: #f57c00;
+}
+
 
 .sidebar-footer {
     margin-top: auto;
 
     padding: 15px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.sidebar-footer button{
+
+.sidebar-footer button {
     width: 100%;
 
     padding: 12px;
 
     border: none;
-
-    border-radius: 7px;
+    border-radius: 8px;
 
     background: white;
-
     color: #f57c00;
 
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    font-family: "Segoe UI", sans-serif;
+
+    font-size: 14px;
     font-weight: 600;
 
-    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.sidebar-footer button:hover{
-    background: #f5f5f5;
+.sidebar-footer button i {
+    font-size: 16px;
+}
+
+
+.sidebar-footer button:hover {
+    background: #fff7ef;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+
+
+@media (max-width: 900px) {
+
+    .admin-sidebar {
+        width: 220px;
+    }
+
+    .sidebar-header {
+        padding: 18px;
+    }
+
+    .barangay-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .barangay-logo img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .sidebar-brand h2 {
+        font-size: 17px;
+    }
+
+    .sidebar-brand span {
+        font-size: 11px;
+    }
+
+    .sidebar-menu {
+        padding: 15px 8px;
+    }
+
+    .sidebar-menu a {
+        padding: 13px 14px;
+    }
+}
+
+
+
+@media (max-width: 600px) {
+
+    .admin-sidebar {
+        width: 250px;
+
+        transform: translateX(-100%);
+
+        transition: transform 0.3s ease;
+    }
+
+    .admin-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-header {
+        padding: 18px 15px;
+
+        gap: 10px;
+    }
+
+    .barangay-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .barangay-logo img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .sidebar-brand h2 {
+        font-size: 16px;
+    }
+
+    .sidebar-brand span {
+        font-size: 10px;
+    }
+
+    .sidebar-menu {
+        padding: 12px 8px;
+    }
+
+    .sidebar-menu a {
+        padding: 13px 14px;
+
+        font-size: 14px;
+    }
+
+    .sidebar-footer {
+        padding: 12px;
+    }
+
+    .sidebar-footer button {
+        padding: 11px;
+    }
+}
+
+
+
+@media (max-width: 400px) {
+
+    .admin-sidebar {
+        width: 235px;
+    }
+
+    .sidebar-header {
+        padding: 16px 13px;
+    }
+
+    .barangay-logo {
+        width: 44px;
+        height: 44px;
+    }
+
+    .barangay-logo img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .sidebar-brand h2 {
+        font-size: 15px;
+    }
+
+    .sidebar-brand span {
+        font-size: 9px;
+    }
+
+    .sidebar-menu a {
+        padding: 12px;
+    }
 }
