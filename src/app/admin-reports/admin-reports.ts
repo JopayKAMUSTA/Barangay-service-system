@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Firestore,collection,collectionData } from '@angular/fire/firestore';
-import { Observable,map } from 'rxjs';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-reports',
@@ -20,62 +20,83 @@ export class AdminReports {
   approvedRequests$: Observable<number>;
   rejectedRequests$: Observable<number>;
 
-  certificateOfResidency$: Observable<number>;
-  certificateOfIndigency$: Observable<number>;
-  barangayClearance$: Observable<number>;
+  documentBreakdown$: Observable<{ name: string; count: number }[]>;
 
-  constructor() 
-  {
-    const requestsRef = collection
-    (
+  constructor() {
+
+    const requestsRef = collection(
       this.firestore,
       'documentRequests'
     );
 
-    this.requests$ = collectionData
-    (
+    this.requests$ = collectionData(
       requestsRef,
       {
         idField: 'id'
       }
     );
 
-    this.totalRequests$ = this.requests$.pipe
-    (
+
+    this.totalRequests$ = this.requests$.pipe(
       map(requests => requests.length)
     );
 
-    this.pendingRequests$ = this.requests$.pipe
-    (
-      map(requests => requests.filter(request => request.status === 'pending').length)
-
+    
+    this.pendingRequests$ = this.requests$.pipe(
+      map(requests =>
+        requests.filter(
+          request => request.status === 'pending'
+        ).length
+      )
     );
 
-    this.approvedRequests$ = this.requests$.pipe
-    (
-      map(requests => requests.filter(request => request.status === 'approved').length)
+   
+    this.approvedRequests$ = this.requests$.pipe(
+      map(requests =>
+        requests.filter(
+          request => request.status === 'approved'
+        ).length
+      )
     );
 
-    this.rejectedRequests$ = this.requests$.pipe
-    (
-      map(requests => requests.filter (request => request.status === 'rejected').length)
+    
+    this.rejectedRequests$ = this.requests$.pipe(
+      map(requests =>
+        requests.filter(
+          request => request.status === 'rejected'
+        ).length
+      )
     );
 
-    this.certificateOfIndigency$ = this.requests$.pipe
-    (
-      map(requests => requests.filter (request => request.documentType === 'Certificate of Indidency').length)
-    );
+   
+    this.documentBreakdown$ = this.requests$.pipe(
 
+      map(requests => {
 
-    this.certificateOfResidency$ = this.requests$.pipe
-    (
-      map(requests => requests.filter (request => request.documentType === 'Certificate of Residency').length)
-    );
+        const counts: { [key: string]: number } = {};
 
-    this.barangayClearance$ = this.requests$.pipe
-    (
-      map(requests => requests.filter (request => request.documentType === 'Barangay Clearance').length)
+        requests.forEach(request => {
+
+          const documentName = request.documentType;
+
+          if (documentName) {
+
+            if (!counts[documentName]) {
+              counts[documentName] = 0;
+            }
+
+            counts[documentName]++;
+          }
+
+        });
+
+        return Object.keys(counts).map(name => ({
+          name: name,
+          count: counts[name]
+        }));
+
+      })
+
     );
   }
-
 }

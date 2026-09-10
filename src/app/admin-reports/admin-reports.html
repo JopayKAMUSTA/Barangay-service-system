@@ -1,44 +1,92 @@
 <div class="reports-page">
 
-    <div class="page-header">
-        <h1>Reports</h1>
-        <p>
-            Overview if document requests in MankilamEase
-        </p>
-    </div>
 
-    <div class="stats">
-        <div class="stat-card">
-             
-            <span> Total Requests</span>
+<div class="page-header">
+
+    <p class="page-label">
+        MANKILAMEASE
+    </p>
+
+    <h1>
+        Reports
+    </h1>
+
+    <p>
+        Overview of document requests in MankilamEase.
+    </p>
+
+</div>
+
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-file-earmark-text"></i>
+        </div>
+
+        <div>
+            <span>
+                Total Requests
+            </span>
 
             <h2>
                 {{ totalRequests$ | async }}
             </h2>
         </div>
 
-        <div class="stat-card">
+    </div>
 
-            <span>Pending</span>
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-clock"></i>
+        </div>
+
+        <div>
+            <span>
+                Pending
+            </span>
 
             <h2>
                 {{ pendingRequests$ | async }}
             </h2>
         </div>
 
-        <div class="stat-card">
-            
-            <span>Approved</span>
-            
-            <h2>
-                {{ approvedRequests$ | async }}
-            </h2> 
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
         </div>
 
+        <div>
+            <span>
+                Approved
+            </span>
 
-        <div class="stat-card">
-            
-            <span>Rejected</span>
+            <h2>
+                {{ approvedRequests$ | async }}
+            </h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-x-circle"></i>
+        </div>
+
+        <div>
+            <span>
+                Rejected
+            </span>
 
             <h2>
                 {{ rejectedRequests$ | async }}
@@ -47,45 +95,58 @@
 
     </div>
 
-    <div class="report-card">
-        
-        <h2>
-            Document Request Breakdown
-        </h2>
+</div>
 
-        <div class="document-list">
 
-            <div class="document-row">
+<div class="report-card">
 
-                <span>
-                    Certificate of Residency
-                </span>
+    <div class="report-header">
+        <div>
+            <h2>Document Request Breakdown</h2>
+            <p>
+                Number of requests for each document type.
+            </p>
+        </div>
 
-                <strong>
-                    {{ certificateOfResidency$ | async }}
-                </strong>
-            </div>
-
-            <div class="document-row">
-
-                <span>
-                    Certificate of Indigency
-                </span>
-
-                <strong>
-                    {{ certificateOfIndigency$ | async }}
-                </strong>
-            </div>
-
-            <div class="document-row">
-                <span>
-                    Barangay Clearance
-                </span>
-
-                <strong>
-                    {{ barangayClearance$ | async }}
-                </strong>
-            </div>
+        <div class="report-icon">
+            <i class="bi bi-bar-chart"></i>
         </div>
     </div>
+
+    <div class="document-list">
+
+        <div
+            class="document-row"
+            *ngFor="let document of (documentBreakdown$ | async)"
+        >
+
+            <div class="document-info">
+
+                <div class="document-icon">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+
+                <span>
+                    {{ document.name }}
+                </span>
+
+            </div>
+
+            <strong>
+                {{ document.count }}
+            </strong>
+
+        </div>
+
+        <div
+            class="empty-message"
+            *ngIf="(documentBreakdown$ | async)?.length === 0"
+        >
+            No document requests yet.
+        </div>
+
+    </div>
+
+</div>
+
 </div>
