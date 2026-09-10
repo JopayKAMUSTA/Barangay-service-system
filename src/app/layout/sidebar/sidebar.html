@@ -1,59 +1,99 @@
 <aside class="sidebar" [class.open]="isSidebarOpen">
 
     <div class="logo">
-        <h2>Barangay Mankilam</h2>
-        <p>Service System</p>
+
+        <img
+            src="images/mankilamease.png"
+            alt="MankilamEase Logo"
+        >
+
+        <div class="logo-text">
+            <h2>MankilamEase</h2>
+            <p>Barangay Service System</p>
+        </div>
+
+        <button
+            type="button"
+            class="close-sidebar"
+            (click)="closeSidebar()">
+            ×
+        </button>
+
     </div>
 
     <nav>
 
-        <a routerLink="/dashboard"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]=" { exact: true}">
-            Dashboard
-        </a>
+    <a routerLink="/dashboard"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
 
-        <a routerLink="/document-request"
-        routerLinkActive="active">
-            Request Document
-        </a>
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span>Dashboard</span>
 
-        <a routerLink="/announcement"
-        routerLinkActive="active">
-            Announcements
-        </a>
+    </a>
 
-        <a routerLink="/my-request"
-        routerLinkActive="active">
-            My Request
-        </a>
+    <a routerLink="/document-request"
+       routerLinkActive="active">
 
-        <a routerLink="/my-profile"
-        routerLinkActive="active">
-            My profile
-        </a>
-    </nav>
-    
-    
-    <div class="logout">
-        <button
+        <i class="bi bi-file-earmark-text"></i>
+        <span>Request Document</span>
+
+    </a>
+
+    <a routerLink="/announcement"
+       routerLinkActive="active">
+
+        <i class="bi bi-megaphone"></i>
+        <span>Announcements</span>
+
+    </a>
+
+    <a routerLink="/my-request"
+       routerLinkActive="active">
+
+        <i class="bi bi-clock-history"></i>
+        <span>My Request</span>
+
+    </a>
+
+    <a routerLink="/my-profile"
+       routerLinkActive="active">
+
+        <i class="bi bi-person"></i>
+        <span>My Profile</span>
+
+    </a>
+
+</nav>
+
+   <div class="logout">
+
+    <button
         type="button"
         (click)="logout()">
-            Logout
-        </button>
-    </div>
+
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+
+    </button>
+
+</div>
+
 </aside>
 
-<button type="button"
-class="menu-button"
-(click)="toggleSidebar()">
+
+<button
+    type="button"
+    class="menu-button"
+    (click)="toggleSidebar()">
 
     ☰
 
 </button>
 
-<div class="sidebar-overlay"
-*ngIf="isSidebarOpen"
-(click)="closeSidebar()">
 
+<div
+    class="sidebar-overlay"
+    *ngIf="isSidebarOpen"
+    (click)="closeSidebar()">
 </div>
