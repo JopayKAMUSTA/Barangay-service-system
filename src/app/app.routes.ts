@@ -17,8 +17,16 @@ import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { AdminDocumentType } from './admin-document-type/admin-document-type';
 import { AdminEarning } from './admin-earning/admin-earning';
+import { Landing } from './landing/landing';
 
 export const routes: Routes = [
+
+    {
+        path: '',
+        component:Landing
+    }
+    
+    ,
     
     {
         path: '',

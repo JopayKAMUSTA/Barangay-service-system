@@ -1,0 +1,663 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<div class="landing-page">
+
+    <header class="navbar">
+
+        <div class="navbar-container">
+
+            <a routerLink="/" class="brand">
+
+                <img src="images/mankilamease.png" alt= "MankilamEase Logo"
+                class="brand-logo">
+
+                <div class="brand-title">
+                    MankilamEase
+                </div>
+
+                <div class="brand-subtitle">
+                    Service System
+                </div>
+            </a>
+
+            <nav class="nav-link">
+
+                <a (click)="scrollTo('home')">Home</a>
+
+                <a (click)="scrollTo('services')">Services</a>
+
+                <a (click)="scrollTo('about')">About</a>
+
+                <a (click)="scrollTo('contact')">Contact</a>
+            </nav>
+
+            <div class="nav-button">
+
+                <a routerLink="/login" class="login-button">
+                    Login
+                </a>
+
+                <a routerLink="/register" class="register-button">
+                    Register
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+
+        <div class="hero-container">
+
+            <div class="hero-content">
+
+                <p class="hero-label">
+                    MankilamEase
+                </p>
+
+                <h1>
+                    Barangay Services,
+                    <span>Made Easier.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Access barangay services, request document,
+                    and monitor your requests conveniently through
+                    the Barangay Mankilam Service System.
+                </p>
+
+                <div class="hero-button">
+
+                    <a routerLink="/register"
+                    class="primary-button">
+
+                        Get Started
+
+                    </a>
+
+                    <a href="#services" class="secondary-button">
+
+                        Explore Services
+
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+
+                <div class="hero-card-header">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="hero-card-content">
+                    
+                    <div class="hero-card-icon">
+                        <img src="images/mankilamease.png" alt="" class="hero-logo">
+                    </div>
+
+                    <h3>
+                        MankilamEase
+                    </h3>
+
+                    <p>
+                        Online Service System
+                    </p>
+
+                    <div class="hero-card-line"></div>
+
+                    <div class="hero-card-row">
+                        <span>Document Requests</span>
+                        <strong>Online</strong>
+                    </div>
+
+                    <div class="hero-card-row">
+                        <span>Request Tracking</span>
+                        <strong>Available</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<section id="about" class="about-section">
+
+    <div class="section-container">
+
+        <div class="about-grid">
+
+            <div class="about-content scroll-left">
+
+                <p class="section-label">
+                    ABOUT US
+                </p>
+
+                <h2>
+                    Making Barangay Services Easier for Everyone
+                </h2>
+
+                <p>
+                    MankilamEase is the Barangay Mankilam Service System
+                    designed to make accessing barangay services more
+                    convenient and organized.
+                </p>
+
+                <p>
+                    Instead of spending unnecessary time waiting at the
+                    barangay office, residents can submit document requests,
+                    monitor their requests, and stay updated with barangay
+                    announcements through the online system.
+                </p>
+
+                <a routerLink="/register" class="about-button">
+                    Get Started
+                </a>
+
+            </div>
+
+
+            <div class="about-card scroll-right">
+
+                <div class="about-card-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+
+                <h3>
+                    MankilamEase
+                </h3>
+
+                <p>
+                    Barangay Mankilam Service System
+                </p>
+
+                <div class="about-line"></div>
+
+                <div class="about-feature">
+                    <strong>01</strong>
+
+                    <div>
+                        <h4>
+                            Convenient
+                        </h4>
+
+                        <p>
+                            Access services online without unnecessary trips.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about-feature">
+                    <strong>02</strong>
+
+                    <div>
+                        <h4>
+                            Organized
+                        </h4>
+
+                        <p>
+                            Keep your document requests organized in one place.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about-feature">
+                    <strong>03</strong>
+
+                    <div>
+                        <h4>
+                            Easy to Track
+                        </h4>
+
+                        <p>
+                            Monitor the progress of your submitted requests.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="services" class="services-section">
+
+    <div class="section-container scroll-reveal">
+        
+        <div class="section-heading">
+
+            <p class="section-label">
+                OUR SERVICES
+            </p>
+
+            <h2>
+                Barangay Services Made Simple
+            </h2>
+
+            <p>
+                Access essential barangay services without
+                having to make unncessary trups to the barangay office.
+            </p>
+
+        </div>
+
+        <div class="services-grid">
+
+            <div class="service-card scroll-reveal">
+
+                <div class="service-icon">
+                    <i class="bi bi-file-text"></i>
+                </div>
+
+                <h3>
+                    Document Requests
+                </h3>
+
+                <p>
+                    Request barangay certificates and other
+                    available documents online.
+                </p>
+
+                <a routerLink="/login">
+                    Request a Document <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+            <div class="service-card scroll-reveal">
+
+                <div class="service-icon">
+                   <i class="bi bi-search"></i>
+                </div>
+
+                <h3>
+                    Request Tracking
+                </h3>
+
+                <p>
+                    Track the progress of your document request
+                    from submission to completion
+                </p>
+
+                <a routerLink="/login">
+                    Track Request <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <div class="service-card scroll-reveal">
+
+                <div class="service-icon">
+                    <i class="bi bi-bell"></i>
+                </div>
+
+                <h3>
+                    Announcements
+                </h3>
+
+                <p>
+                    Stay updated with important announcement
+                    and information from Barangay Mankilam.
+                </p>
+
+                <a routerLink="/login">
+                    View Announcements <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+            <div class="service-card scroll-reveal">
+
+                <div class="service-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <h3>
+                    Resident Account
+                </h3>
+                
+                <p>
+                    Manage your resident profile and view
+                     your submitted document requests
+                </p>
+
+                <a routerLink="/register">
+                    Create Account 
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="how-it-works" class="how-section">
+
+    <div class="section-container">
+
+        <div class="section-heading scroll-reveal">
+
+            <p class="section-label">
+                HOW IT WORKS
+            </p>
+
+            <h2>
+                Simple Steps to Get Your Document
+            </h2>
+
+            <p>
+                Requesting a barangay document is simple.
+                Follow these steps using the online service system.
+            </p>
+
+        </div>
+
+        <div class="steps-container">
+
+            <div class="step-card scroll-reveal">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-content">
+
+                    <h3>
+                        Create an Account
+                    </h3>
+
+                    <p>
+                        Register your resident account and provide
+                        the required information to get started.
+                    </p>
+
+                </div>
+                
+            </div>
+
+            <div class="step-card scroll-reveal">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-content">
+
+                    <h3>
+                        Submit a Request
+                    </h3>
+
+                    <p>
+                        Choose the document you need, provide the
+                        purpose, and submit your request online.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="step-card scroll-reveal">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-content">
+                    
+                    <h3>
+                        Track Your Request
+                    </h3>
+
+                    <p>
+                        Monitor your request as it moves through
+                        the barangay's processing stages.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="step-card scroll-reveal">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="step-content">
+
+                    <h3>
+                        Pick Up Your Document
+                    </h3>
+
+                    <p>
+                        Once your request is ready, visit the
+                        barangay office to claim your document.
+                    </p>
+
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+
+    <div class="section-container">
+
+        <div class="contact-header scroll-reveal">
+
+            <p class="section-label">
+                CONTACT US
+            </p>
+
+            <h2>
+                We're Here to Help
+            </h2>
+
+            <p>
+                Have questions about our barangay services or your
+                document request? Get in touch with Barangay Mankilam.
+            </p>
+
+        </div>
+
+
+        <div class="contact-grid">
+
+            <div class="contact-info scroll-left">
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Barangay Office
+                        </h3>
+
+                        <p>
+                            Barangay Mankilam <br>
+                            Tagum City, Davao del Norte
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                       <i class="bi bi-telephone"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Contact Number
+                        </h3>
+
+                        <p>
+                            Contact the Barangay Mankilam office
+                            during office hours.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                       <i class="bi bi-envelope"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Email
+                        </h3>
+
+                        <p>
+                            Send us your questions and concerns
+                            through our official email.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="contact-card scroll-right">
+
+                <h3>
+                    Need Barangay Services?
+                </h3>
+
+                <p>
+                    Create an account to request documents,
+                    track your requests, and access available
+                    barangay services online.
+                </p>
+
+                <a routerLink="/register" class="contact-button">
+                    Get Started
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <a routerLink="/" class="footer-logo">
+                MankilamEase
+            </a>
+
+            <p>
+                Barangay services made easier,
+                faster, and more convenient.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a (click)="scrollTo('home')">
+                Home
+            </a>
+
+            <a (click)="scrollTo('services')">
+                Services
+            </a>
+
+            <a (click)="scrollTo('about')">
+                About
+            </a>
+
+            <a (click)="scrollTo('contact')">
+                Contact
+            </a>
+        </div>
+    
+        <div class="footer-links">
+
+            <h3>
+                Services
+            </h3>
+
+            <a href="#services">
+                Document Requests
+            </a>
+
+            <a href="#services">
+                Request Tracking
+            </a>
+
+            <a href="#services">
+                Announcement
+            </a>
+
+            <a href="#services">
+                Resident Account
+            </a>
+
+        </div>
+
+        <div class="footer-links">
+
+            <h3>
+                Account
+            </h3>
+
+            <a routerLink="/login">
+                Login
+            </a>
+
+            <a routerLink="/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        <p>
+            &copy; 2026 MankilamEase. Barangay Mankilam Service System.
+        </p>
+
+        <p>
+            Barangay Mankilam, Tagum City
+        </p>
+
+    </div>
+
+</footer>
+
+</div>

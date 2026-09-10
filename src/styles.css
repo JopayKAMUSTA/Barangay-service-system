@@ -12,6 +12,7 @@ html, body
 
     background: #f5f6f8;
     color: #333;
+    scroll-behavior: smooth;
 }
 
 button, input, textarea, select
