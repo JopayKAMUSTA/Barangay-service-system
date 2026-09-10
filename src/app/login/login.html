@@ -1,32 +1,90 @@
+<div class="login-page">
+
+
 <div class="login-container">
 
-    <h2>Resident Login</h2>
+    <div class="login-card">
 
-    <form (ngSubmit)="login()">
+        <div class="login-header">
 
-        <input type="email"
-        [(ngModel)]="email"
-         name="email"
-         placeholder="Email"
-         required>
+            <a routerLink="/" class="login-logo">
+                <img
+                    src="images/mankilamease.png"
+                    alt="MankilamEase Logo">
+            </a>
 
-         <input type="password"
-         [(ngModel)]="password"
-         name="password"
-         placeholder="Password"
-         required>
+            <h1>
+                Resident Login
+            </h1>
 
-         <button type="submit">
-            Login
-         </button>
-    </form>
-    <p *ngIf="message"> 
-        {{ message }}
-    </p>
+            <p>
+                Sign in to your MankilamEase account
+            </p>
 
-    <p>
-        Don't have an account?
-        <a routerLink="/register"> Register</a>
-    </p>
-    
+        </div>
+
+        <form (ngSubmit)="login()">
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    [(ngModel)]="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
+
+            </div>
+
+            <button type="submit" class="login-submit">
+                Login
+            </button>
+
+        </form>
+
+        @if (message) {
+            <p class="login-message">
+                {{ message }}
+            </p>
+        }
+
+        <p class="register-text">
+            Don't have an account?
+
+            <a routerLink="/register">
+                Create an account
+            </a>
+        </p>
+
+        <a routerLink="/" class="back-home">
+            <i class="bi bi-arrow-left"></i>
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
 </div>
