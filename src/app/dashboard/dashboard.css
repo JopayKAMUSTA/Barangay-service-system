@@ -15,6 +15,47 @@ gap: 25px;
 margin-bottom: 30px;
 }
 
+.header-actions
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-button
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: 1px solid #f57c00;
+    background: white;
+    color: #f57c00;
+
+    padding: 12px 18px;
+    border-radius: 8px;
+
+    font-family: "Segoe UI",sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.notification-button:hover 
+{
+    background: #f57c00;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.notification-button i 
+{
+    font-size: 16px;
+}
+
 .page-label {
 display: inline-block;
 margin-bottom: 7px;
@@ -633,6 +674,21 @@ to {
 }
 
 
+.header-actions
+{
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.notification-button,
+.request-button
+{
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
 .page-header {
     flex-direction: column;
 
@@ -642,15 +698,9 @@ to {
 }
 
 
+
 .page-header h1 {
     font-size: 25px;
-}
-
-
-.request-button {
-    width: 100%;
-
-    box-sizing: border-box;
 }
 
 

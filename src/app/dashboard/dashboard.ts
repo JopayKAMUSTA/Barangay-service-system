@@ -2,8 +2,18 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+import { NotificationService } from '../services/notification-service';
+
 import { Auth } from '@angular/fire/auth';
-import { Firestore, collection, doc, getDoc, getDocs, query, where} from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,26 +25,24 @@ export class Dashboard {
 
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private notificationService = inject(NotificationService);
 
   firstname = '';
   loading = true;
-  recentRequests: any[] =[];
+  recentRequests: any[] = [];
 
-  async ngOnInit()
-  {
-   
-    try
-    {
+  async ngOnInit() {
+
+    try {
+
       const user = this.auth.currentUser;
 
-      if(!user)
-      {
+      if (!user) {
         this.loading = false;
         return;
       }
 
-      const userRef = doc
-      (
+      const userRef = doc(
         this.firestore,
         'users',
         user.uid
@@ -42,26 +50,25 @@ export class Dashboard {
 
       const userDoc = await getDoc(userRef);
 
-      if(userDoc.exists())
-      {
+      if (userDoc.exists()) {
+
         const userData = userDoc.data();
 
         this.firstname = userData['firstname'] || 'resident';
-      }
-      else
-      {
-        this.firstname = 'resident';
-      }
-      
 
-      const requestsRef = collection
-      (
+      } else {
+
+        this.firstname = 'resident';
+
+      }
+
+
+      const requestsRef = collection(
         this.firestore,
         'documentRequests'
       );
 
-      const requestsQuery = query
-      (
+      const requestsQuery = query(
         requestsRef,
         where('userId', '==', user.uid)
       );
@@ -69,32 +76,53 @@ export class Dashboard {
       const requestsSnapshot = await getDocs(requestsQuery);
 
       this.recentRequests = requestsSnapshot.docs
-      .map
-      (
-        request => ({
-          id:request.id,
-          ...request.data()
+        .map(
+          request => ({
+            id: request.id,
+            ...request.data()
+          })
+        )
+        .sort((a: any, b: any) => {
+
+          const dateA = a.createdAt?.toDate?.() || new Date(0);
+          const dateB = b.createdAt?.toDate?.() || new Date(0);
+
+          return dateB.getTime() - dateA.getTime();
+
         })
-      )
-      .sort((a: any,b: any) => {
+        .slice(0, 5);
 
-        const dateA = a.createdAt?.toDate?.() || new Date(0);
-        const dateB = b.createdAt?.toDate?.() || new Date(0);
-
-        return dateB.getTime() - dateA.getTime();
-      })
-      .slice(0,5);
     }
-    catch (error)
-    {
+    catch (error) {
+
       console.error('Error loading dashboard: ', error);
-      
+
     }
-    finally
-    {
+    finally {
+
       this.loading = false;
+
     }
   }
 
+  async enableNotification()
+  {
+    const token = await this.notificationService.requestPermission();
+
+    if(token)
+    {
+      console.log('Notification successfully enabled! ');
+    }
+  }
+
+
+  
+  getStatusClass(status: string): string {
+
+    return status
+      .toLowerCase()
+      .replace(/\s+/g, '-');
+
+  }
 
 }

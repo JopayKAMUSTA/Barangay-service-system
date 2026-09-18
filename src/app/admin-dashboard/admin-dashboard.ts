@@ -41,15 +41,15 @@ export class AdminDashboard {
     );
 
     this.pendingRequests$ = this.requests$.pipe(
-      map(requests => requests.filter(requests => requests.status === 'pending').length)
+      map(requests => requests.filter(requests => requests.status === 'Pending').length)
     );
 
     this.approvedRequests$ = this.requests$.pipe(
-      map(requests => requests.filter(requests => requests.status === 'approved').length)
+      map(requests => requests.filter(requests => requests.status === 'Approved').length)
     );
 
     this.rejectedRequests$ = this.requests$.pipe(
-      map(requests => requests.filter(requests => requests.status === 'rejected').length)
+      map(requests => requests.filter(requests => requests.status === 'Rejected').length)
     );
   }
 }

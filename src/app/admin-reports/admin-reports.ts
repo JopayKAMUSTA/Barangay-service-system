@@ -45,7 +45,7 @@ export class AdminReports {
     this.pendingRequests$ = this.requests$.pipe(
       map(requests =>
         requests.filter(
-          request => request.status === 'pending'
+          request => request.status === 'Pending'
         ).length
       )
     );
@@ -54,7 +54,7 @@ export class AdminReports {
     this.approvedRequests$ = this.requests$.pipe(
       map(requests =>
         requests.filter(
-          request => request.status === 'approved'
+          request => request.status === 'Approved'
         ).length
       )
     );
@@ -63,7 +63,7 @@ export class AdminReports {
     this.rejectedRequests$ = this.requests$.pipe(
       map(requests =>
         requests.filter(
-          request => request.status === 'rejected'
+          request => request.status === 'Rejected'
         ).length
       )
     );
