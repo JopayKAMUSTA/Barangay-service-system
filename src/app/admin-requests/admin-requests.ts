@@ -5,13 +5,11 @@ import { FormsModule } from '@angular/forms';
 import {
   Firestore,
   collection,
-  collectionData,
+  getDocs,
   doc,
   updateDoc,
   getDoc
 } from '@angular/fire/firestore';
-
-import { Observable } from 'rxjs';
 
 import Swal from 'sweetalert2';
 
@@ -22,7 +20,6 @@ import Swal from 'sweetalert2';
   templateUrl: './admin-requests.html',
   styleUrl: './admin-requests.css',
 })
-
 export class AdminRequests {
 
   selectedRequest: any = null;
@@ -35,26 +32,197 @@ export class AdminRequests {
 
   private firestore = inject(Firestore);
 
-  requests$: Observable<any[]>;
+  requests: any[] = [];
 
 
   constructor() {
+    this.loadRequests();
+  }
 
-    const requestsRef = collection(
-      this.firestore,
-      'documentRequests'
-    );
 
-    this.requests$ = collectionData(
-      requestsRef,
-      {
-        idField: 'id'
-      }
-    );
+  // ==========================================
+  // LOAD REQUESTS
+  // ==========================================
+
+  async loadRequests() {
+
+    try {
+
+      const requestsRef = collection(
+        this.firestore,
+        'documentRequests'
+      );
+
+      const snapshot = await getDocs(requestsRef);
+
+      this.requests = snapshot.docs.map(request => {
+
+        return {
+          id: request.id,
+          ...request.data()
+        };
+
+      });
+
+      console.log(
+        'Requests loaded:',
+        this.requests
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Error loading requests:',
+        error
+      );
+
+    }
 
   }
 
 
+  // ==========================================
+  // APPROVE REQUEST
+  // ==========================================
+
+  async approveRequest() {
+
+    if (!this.selectedRequest) {
+      return;
+    }
+
+
+    const result = await Swal.fire({
+
+      icon: 'question',
+
+      title: 'Approve Request?',
+
+      text:
+        'Are you sure you want to approve this document request?',
+
+      showCancelButton: true,
+
+      confirmButtonText: 'Yes, Approve',
+
+      cancelButtonText: 'Cancel',
+
+      confirmButtonColor: '#f57c00',
+
+      cancelButtonColor: '#777'
+
+    });
+
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+
+    try {
+
+      Swal.fire({
+
+        title: 'Approving Request',
+
+        text: 'Please wait...',
+
+        allowOutsideClick: false,
+
+        allowEscapeKey: false,
+
+        showConfirmButton: false,
+
+        didOpen: () => {
+
+          Swal.showLoading();
+
+        }
+
+      });
+
+
+      const requestRef = doc(
+        this.firestore,
+        'documentRequests',
+        this.selectedRequest.id
+      );
+
+
+      await updateDoc(
+        requestRef,
+        {
+          status: 'Approved'
+        }
+      );
+
+
+      // Update modal immediately
+      this.selectedRequest = {
+
+        ...this.selectedRequest,
+
+        status: 'Approved'
+
+      };
+
+
+      // Refresh table
+      await this.loadRequests();
+
+
+      await Swal.fire({
+
+        icon: 'success',
+
+        title: 'Request Approved',
+
+        text:
+          'The request has been approved. You can now start processing it.',
+
+        confirmButtonColor: '#f57c00',
+
+        timer: 1500,
+
+        timerProgressBar: true,
+
+        showConfirmButton: false
+
+      });
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Error approving request:',
+        error
+      );
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title: 'Approval Failed',
+
+        text:
+          'Unable to approve the request. Please try again.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+    }
+
+  }
+
+
+  // ==========================================
+  // REJECT REQUEST
+  // ==========================================
 
   async rejectRequest() {
 
@@ -70,28 +238,43 @@ export class AdminRequests {
     if (!remarks) {
 
       Swal.fire({
+
         icon: 'warning',
+
         title: 'Remarks Required',
-        text: 'Please provide a reason for rejecting this request.',
+
+        text:
+          'Please provide a reason for rejecting this request.',
+
         confirmButtonColor: '#f57c00'
+
       });
 
       return;
+
     }
 
 
     try {
 
       Swal.fire({
+
         title: 'Rejecting Request',
+
         text: 'Please wait...',
+
         allowOutsideClick: false,
+
         allowEscapeKey: false,
+
         showConfirmButton: false,
 
         didOpen: () => {
+
           Swal.showLoading();
+
         }
+
       });
 
 
@@ -106,9 +289,13 @@ export class AdminRequests {
         requestRef,
         {
           status: 'Rejected',
+
           remarks: remarks
         }
       );
+
+
+      await this.loadRequests();
 
 
       await Swal.fire({
@@ -117,7 +304,8 @@ export class AdminRequests {
 
         title: 'Request Rejected',
 
-        text: 'The document request has been rejected.',
+        text:
+          'The document request has been rejected.',
 
         confirmButtonColor: '#f57c00',
 
@@ -148,7 +336,8 @@ export class AdminRequests {
 
         title: 'Rejection Failed',
 
-        text: 'Unable to reject the request. Please try again.',
+        text:
+          'Unable to reject the request. Please try again.',
 
         confirmButtonColor: '#f57c00'
 
@@ -159,7 +348,9 @@ export class AdminRequests {
   }
 
 
-  
+  // ==========================================
+  // CANCEL REJECT
+  // ==========================================
 
   cancelReject() {
 
@@ -170,7 +361,9 @@ export class AdminRequests {
   }
 
 
-  
+  // ==========================================
+  // VIEW REQUEST
+  // ==========================================
 
   async viewRequest(request: any) {
 
@@ -231,6 +424,17 @@ export class AdminRequests {
           this.selectedResident
         );
 
+
+        // Combine request and resident information
+
+        this.selectedRequest = {
+
+          ...request,
+
+          ...this.selectedResident
+
+        };
+
       }
 
       else {
@@ -265,7 +469,9 @@ export class AdminRequests {
   }
 
 
-  
+  // ==========================================
+  // CLOSE MODAL
+  // ==========================================
 
   closeModal() {
 
@@ -282,7 +488,9 @@ export class AdminRequests {
   }
 
 
- 
+  // ==========================================
+  // UPDATE PAYMENT STATUS
+  // ==========================================
 
   async updatePaymentStatus(
     requestId: string,
@@ -326,6 +534,7 @@ export class AdminRequests {
         requestRef,
         {
           paymentStatus: paymentStatus,
+
           paidAt: paidAt
         }
       );
@@ -336,6 +545,8 @@ export class AdminRequests {
         paymentStatus
       );
 
+
+      // Update modal immediately
 
       this.selectedRequest = {
 
@@ -350,13 +561,19 @@ export class AdminRequests {
       };
 
 
+      // Refresh table
+
+      await this.loadRequests();
+
+
       await Swal.fire({
 
         icon: 'success',
 
         title: 'Payment Updated',
 
-        text: `Payment status has been marked as ${paymentStatus}.`,
+        text:
+          `Payment status has been marked as ${paymentStatus}.`,
 
         confirmButtonColor: '#f57c00',
 
@@ -384,7 +601,8 @@ export class AdminRequests {
 
         title: 'Payment Update Failed',
 
-        text: 'Unable to update the payment status.',
+        text:
+          'Unable to update the payment status.',
 
         confirmButtonColor: '#f57c00'
 
@@ -395,7 +613,9 @@ export class AdminRequests {
   }
 
 
-  
+  // ==========================================
+  // UPDATE REQUEST STATUS
+  // ==========================================
 
   async updateStatus(
     requestId: string,
@@ -446,13 +666,30 @@ export class AdminRequests {
       );
 
 
+      // Update modal immediately
+
+      this.selectedRequest = {
+
+        ...this.selectedRequest,
+
+        status: status
+
+      };
+
+
+      // Refresh table
+
+      await this.loadRequests();
+
+
       await Swal.fire({
 
         icon: 'success',
 
         title: 'Status Updated',
 
-        text: `Request status changed to ${status}.`,
+        text:
+          `Request status changed to ${status}.`,
 
         confirmButtonColor: '#f57c00',
 
@@ -463,9 +700,6 @@ export class AdminRequests {
         showConfirmButton: false
 
       });
-
-
-      this.closeModal();
 
     }
 
@@ -483,7 +717,8 @@ export class AdminRequests {
 
         title: 'Update Failed',
 
-        text: 'Unable to update the request status.',
+        text:
+          'Unable to update the request status.',
 
         confirmButtonColor: '#f57c00'
 

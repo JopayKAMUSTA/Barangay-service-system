@@ -8,8 +8,7 @@
 .request-page
 {
     padding: 30px;
-    font-family: "Segoe UI",sans-serif;
-
+    font-family: "Segoe UI", sans-serif;
 }
 
 .page-header
@@ -24,22 +23,46 @@
     color: #333;
 }
 
-.page-header p 
+.page-header p
 {
     margin: 0;
     color: #777;
 }
+
+
+/* ========================================== */
+/* REQUEST CARD */
+/* ========================================== */
 
 .request-card
 {
     background: white;
     border-radius: 18px;
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0 ,0, 0 , 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
+
+
+/* ========================================== */
+/* LOADING */
+/* ========================================== */
+
+.loading
+{
+    padding: 40px 20px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* ========================================== */
+/* TABLE */
+/* ========================================== */
 
 .table-wrapper
 {
+    width: 100%;
     overflow-x: auto;
 }
 
@@ -56,6 +79,7 @@ th
     background: #fafafa;
     color: #555;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 td
@@ -71,6 +95,11 @@ td strong
     color: #333;
 }
 
+
+/* ========================================== */
+/* STATUS */
+/* ========================================== */
+
 .status
 {
     display: inline-block;
@@ -79,7 +108,11 @@ td strong
     font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
+    white-space: nowrap;
 }
+
+
+/* Pending */
 
 .status.pending
 {
@@ -87,11 +120,44 @@ td strong
     color: #856404;
 }
 
+
+/* Approved */
+
 .status.approved
 {
     background: #d4edda;
     color: #155724;
 }
+
+
+/* In Progress */
+
+.status.in.progress
+{
+    background: #e7f1ff;
+    color: #246bce;
+}
+
+
+/* Ready for Pickup */
+
+.status.ready.for.pickup
+{
+    background: #eee1f7;
+    color: #7b3fa1;
+}
+
+
+/* Completed */
+
+.status.completed
+{
+    background: #dff3e4;
+    color: #2e7d32;
+}
+
+
+/* Rejected */
 
 .status.rejected
 {
@@ -99,18 +165,65 @@ td strong
     color: #721c24;
 }
 
+
+/* ========================================== */
+/* EMPTY STATE */
+/* ========================================== */
+
+.empty-state
+{
+    padding: 50px 20px;
+    text-align: center;
+}
+
 .empty-state h3
 {
     color: #444;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
 }
+
+.empty-state p
+{
+    margin: 0;
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* ========================================== */
+/* REJECTION REMARKS */
+/* ========================================== */
 
 .rejection-remarks
 {
+    display: inline-block;
+    max-width: 250px;
     color: #dc3545;
     font-size: 13px;
     font-weight: 500;
+    white-space: normal;
+    line-height: 1.5;
 }
+
+
+/* ========================================== */
+/* TABLE HOVER */
+/* ========================================== */
+
+tbody tr
+{
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover
+{
+    background: #fafafa;
+}
+
+
+/* ========================================== */
+/* TABLET */
+/* ========================================== */
 
 @media (max-width: 900px)
 {
@@ -118,17 +231,22 @@ td strong
     {
         max-width: 900px;
         padding: 25px;
-        
     }
+
     .page-header
     {
         text-align: center;
     }
 }
 
-@media (max-width:600px)
+
+/* ========================================== */
+/* MOBILE */
+/* ========================================== */
+
+@media (max-width: 600px)
 {
-     :host
+    :host
     {
         display: block;
         width: 100%;
@@ -173,7 +291,9 @@ td strong
         border-radius: 12px;
     }
 
+
     /* Mobile table can scroll horizontally */
+
     .table-wrapper
     {
         width: 100%;
@@ -184,8 +304,8 @@ td strong
 
     table
     {
-        width: 750px;
-        min-width: 750px;
+        width: 850px;
+        min-width: 850px;
     }
 
     th,
@@ -193,5 +313,11 @@ td strong
     {
         padding: 12px 10px;
         white-space: nowrap;
+    }
+
+    .rejection-remarks
+    {
+        max-width: 200px;
+        white-space: normal;
     }
 }

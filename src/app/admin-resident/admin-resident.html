@@ -1,75 +1,99 @@
 <div class="resident-page">
 
-    <div class="page-header">
-        <div>
-            <h1>Resident Management</h1>
-            <p>View and manage registered MankilamEase residents.</p>
-        </div>
+  <div class="page-header">
+
+    <div>
+      <h1>Resident Management</h1>
+      <p>View and manage registered MankilamEase residents.</p>
+    </div>
+
+  </div>
+
+
+  <div class="resident-card">
+
+    <div class="search-container">
+
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        (input)="searchResidents()"
+        placeholder="Search by name, email, or contact number..."
+      >
+
     </div>
 
 
-    <div class="resident-card">
+    <!-- EMPTY MESSAGE -->
 
-        <div class="search-container">
-
-            <input type="text" [(ngModel)]="searchText"
-            (input)="searchResidents()"
-            placeholder="Search by name, email, or contact number...">
-
-        </div>
-
-        <div *ngIf="filteredResidents$ | async as residents">
-
-            <p class="empty-message"
-            *ngIf="residents.length === 0">
-            No residents found
-            </p>
-
-            <div class="table-wrapper"
-            *ngIf="residents.length > 0">
+    <p
+      class="empty-message"
+      *ngIf="filteredResidents.length === 0"
+    >
+      No residents found
+    </p>
 
 
-            <table>
+    <!-- RESIDENT TABLE -->
 
-                <thead>
+    <div
+      class="table-wrapper"
+      *ngIf="filteredResidents.length > 0"
+    >
 
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Birthdate</th>
-                        <th>Address</th>
-                    </tr>
-                </thead>
+      <table>
 
-                <tbody>
+        <thead>
 
-                    <tr *ngFor="let resident of residents">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Birthdate</th>
+            <th>Address</th>
+          </tr>
 
-                        <td>
-                            <strong>
-                                {{ resident.firstname }}
-                                {{ resident.middlename }}
-                                {{ resident.lastname }}
-                            </strong>
-                        </td>
+        </thead>
 
-                        <td>
-                            {{ resident.email }}
-                        </td>
-                        <td>
-                            {{ resident.contactNumber }}
-                        </td>
-                        <td>
-                            {{ resident.birthdate }}
-                        </td>
-                        <td>
-                            {{ resident.address }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-        </div>
+
+        <tbody>
+
+          <tr
+            *ngFor="let resident of filteredResidents"
+          >
+
+            <td>
+              <strong>
+                {{ resident.firstname }}
+                {{ resident.middlename }}
+                {{ resident.lastname }}
+              </strong>
+            </td>
+
+            <td>
+              {{ resident.email }}
+            </td>
+
+            <td>
+              {{ resident.contactNumber }}
+            </td>
+
+            <td>
+              {{ resident.birthdate }}
+            </td>
+
+            <td>
+              {{ resident.address }}
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
     </div>
+
+  </div>
+
 </div>

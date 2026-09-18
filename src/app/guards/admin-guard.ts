@@ -1,58 +1,107 @@
-import { inject } from "@angular/core";
-import { Router } from "@angular/router"; 
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Auth, authState } from "@angular/fire/auth";
+import {
+  Auth,
+  authState
+} from '@angular/fire/auth';
 
-import { Firestore,doc,docData } from "@angular/fire/firestore";
+import {
+  Firestore,
+  doc,
+  getDoc
+} from '@angular/fire/firestore';
 
-import { switchMap, take, map } from "rxjs";
+import {
+  take,
+  map,
+  switchMap,
+  from,
+  of
+} from 'rxjs';
 
-export const adminGuard = () => 
-{
+export const adminGuard = () => {
 
   const auth = inject(Auth);
   const firestore = inject(Firestore);
   const router = inject(Router);
 
-  return authState(auth).pipe
-  (
+  return authState(auth).pipe(
 
     take(1),
 
-    switchMap(user => 
-    {
+    switchMap(user => {
 
-      if(!user)
-      {
-        return [ router.createUrlTree(['/login'])];
+      // =========================
+      // NOT LOGGED IN
+      // =========================
+
+      if (!user) {
+
+        return of(
+          router.createUrlTree(['/login'])
+        );
+
       }
 
-      const userRef = doc
-      (
+      // =========================
+      // USER DOCUMENT
+      // =========================
 
+      const userRef = doc(
         firestore,
         'users',
         user.uid
       );
 
-      return docData(userRef).pipe
-      (
+      // Use Firebase getDoc instead of docData
+      return from(
+        getDoc(userRef)
+      ).pipe(
 
-        take(1),
+        map(userSnapshot => {
 
-        map(profile => 
-        {
+          // User document doesn't exist
+          if (!userSnapshot.exists()) {
 
-          if(profile?.['role'] == 'admin') 
-          {
-
-            return true
+            return router.createUrlTree([
+              '/login'
+            ]);
 
           }
 
-          return router.createUrlTree(['/dashboard'])
+          const profile =
+            userSnapshot.data();
+
+          console.log(
+            'Admin guard profile:',
+            profile
+          );
+
+          // =========================
+          // ADMIN
+          // =========================
+
+          if (profile['role'] === 'admin') {
+
+            return true;
+
+          }
+
+          // =========================
+          // NOT ADMIN
+          // =========================
+
+          return router.createUrlTree([
+            '/dashboard'
+          ]);
+
         })
+
       );
+
     })
+
   );
+
 };

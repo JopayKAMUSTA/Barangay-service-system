@@ -39,47 +39,54 @@
                 </tr>
             </thead>
 
-            <tbody *ngIf="documentTypes$ | async as documents">
-                <tr *ngFor="let document of documents">
+         <tbody>
+    <tr *ngFor="let document of documentTypes">
 
-                    <td>
-                        {{ document.name }}
-                    </td>
-                    <td>
-                        {{ document.description }}
-                    </td>
-                    <td>
-                        P{{ document.fee | number:'1.2-2'}}
-                    </td>
-                    <td>
-                        <span class="status"
-                        [class.active]="document.status === 'Active'"
-                        [class.inactive]="document.status !== 'Active'">
-                    
-                            {{ document.status }}
-                    </span>
-                    </td>
+        <td>
+            {{ document.name }}
+        </td>
 
-                    <td>
+        <td>
+            {{ document.description }}
+        </td>
 
-                        <button class="edit-btn"
-                        (click)="editDocumentType(document)">
-                            Edit
-                        </button>
+        <td>
+            P{{ document.fee | number:'1.2-2' }}
+        </td>
 
-                        <button class="delete-btn"
-                        (click)="deleteDocumentType(document)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-                
-                <tr *ngIf="documents.length === 0">
-                    <td colspan="5" class="empty">
-                        No Document types found
-                    </td>
-                </tr>
-            </tbody>
+        <td>
+            <span
+                class="status"
+                [class.active]="document.status === 'Active'"
+                [class.inactive]="document.status !== 'Active'">
+
+                {{ document.status }}
+
+            </span>
+        </td>
+
+        <td>
+            <button
+                class="edit-btn"
+                (click)="editDocumentType(document)">
+                Edit
+            </button>
+
+            <button
+                class="delete-btn"
+                (click)="deleteDocumentType(document)">
+                Delete
+            </button>
+        </td>
+
+    </tr>
+
+    <tr *ngIf="documentTypes.length === 0">
+        <td colspan="5" class="empty">
+            No Document types found
+        </td>
+    </tr>
+</tbody>
         </table>
     </div>
 

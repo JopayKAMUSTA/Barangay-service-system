@@ -1,7 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable, map } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  getDocs
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-admin-reports',
@@ -13,90 +16,94 @@ export class AdminReports {
 
   private firestore = inject(Firestore);
 
-  requests$: Observable<any[]>;
+  requests: any[] = [];
 
-  totalRequests$: Observable<number>;
-  pendingRequests$: Observable<number>;
-  approvedRequests$: Observable<number>;
-  rejectedRequests$: Observable<number>;
+  totalRequests = 0;
+  pendingRequests = 0;
+  approvedRequests = 0;
+  rejectedRequests = 0;
 
-  documentBreakdown$: Observable<{ name: string; count: number }[]>;
+  documentBreakdown: {
+    name: string;
+    count: number;
+  }[] = [];
 
   constructor() {
+    this.loadReports();
+  }
 
-    const requestsRef = collection(
-      this.firestore,
-      'documentRequests'
-    );
+  async loadReports() {
 
-    this.requests$ = collectionData(
-      requestsRef,
-      {
-        idField: 'id'
-      }
-    );
+    try {
+
+      const requestsRef = collection(
+        this.firestore,
+        'documentRequests'
+      );
+
+      const snapshot = await getDocs(requestsRef);
+
+      this.requests = snapshot.docs.map(request => ({
+        id: request.id,
+        ...request.data()
+      }));
+
+      // Total
+      this.totalRequests = this.requests.length;
+
+      // Pending
+      this.pendingRequests = this.requests.filter(
+        request => request.status === 'Pending'
+      ).length;
+
+      // Approved
+      this.approvedRequests = this.requests.filter(
+        request => request.status === 'Approved'
+      ).length;
+
+      // Rejected
+      this.rejectedRequests = this.requests.filter(
+        request => request.status === 'Rejected'
+      ).length;
 
 
-    this.totalRequests$ = this.requests$.pipe(
-      map(requests => requests.length)
-    );
+      // Document breakdown
+      const counts: {
+        [key: string]: number;
+      } = {};
 
-    
-    this.pendingRequests$ = this.requests$.pipe(
-      map(requests =>
-        requests.filter(
-          request => request.status === 'Pending'
-        ).length
-      )
-    );
+      this.requests.forEach(request => {
 
-   
-    this.approvedRequests$ = this.requests$.pipe(
-      map(requests =>
-        requests.filter(
-          request => request.status === 'Approved'
-        ).length
-      )
-    );
+        const documentName = request.documentType;
 
-    
-    this.rejectedRequests$ = this.requests$.pipe(
-      map(requests =>
-        requests.filter(
-          request => request.status === 'Rejected'
-        ).length
-      )
-    );
+        if (documentName) {
 
-   
-    this.documentBreakdown$ = this.requests$.pipe(
-
-      map(requests => {
-
-        const counts: { [key: string]: number } = {};
-
-        requests.forEach(request => {
-
-          const documentName = request.documentType;
-
-          if (documentName) {
-
-            if (!counts[documentName]) {
-              counts[documentName] = 0;
-            }
-
-            counts[documentName]++;
+          if (!counts[documentName]) {
+            counts[documentName] = 0;
           }
 
-        });
+          counts[documentName]++;
+        }
 
-        return Object.keys(counts).map(name => ({
-          name: name,
-          count: counts[name]
-        }));
+      });
 
-      })
+      this.documentBreakdown = Object.keys(counts).map(name => ({
+        name: name,
+        count: counts[name]
+      }));
 
-    );
+
+      console.log('Reports loaded:', this.requests);
+      console.log('Document breakdown:', this.documentBreakdown);
+
+    } catch (error) {
+
+      console.error(
+        'Error loading reports:',
+        error
+      );
+
+    }
+
   }
 }

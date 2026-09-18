@@ -1,9 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Firestore,collection,collectionData, query,orderBy } from '@angular/fire/firestore';
-
-import { Observable } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  query,
+  orderBy
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-announcement',
@@ -15,28 +19,87 @@ export class Announcement {
 
   private firestore = inject(Firestore);
 
-  announcements$: Observable<any[]>;
 
-  constructor()
-  {
-    const announcementsRef = collection 
-    (
-      this.firestore,
-      'announcements'
-    );
+  // ==========================================
+  // ANNOUNCEMENTS
+  // ==========================================
 
-    const announcementsQuery = query
-  (
-    announcementsRef,
-    orderBy('createdAt' , 'desc')
-  );
+  announcements: any[] = [];
 
-  this.announcements$ = collectionData
-  (
-    announcementsQuery,
-    {
-      idField: 'id'
-    }
-  );
+
+  // ==========================================
+  // CONSTRUCTOR
+  // ==========================================
+
+  constructor() {
+
+    this.loadAnnouncements();
+
   }
+
+
+  // ==========================================
+  // LOAD ANNOUNCEMENTS
+  // ==========================================
+
+  async loadAnnouncements() {
+
+    try {
+
+      const announcementsRef = collection(
+        this.firestore,
+        'announcements'
+      );
+
+
+      const announcementsQuery = query(
+
+        announcementsRef,
+
+        orderBy(
+          'createdAt',
+          'desc'
+        )
+
+      );
+
+
+      const snapshot =
+        await getDocs(
+          announcementsQuery
+        );
+
+
+      this.announcements =
+        snapshot.docs.map(announcement => {
+
+          return {
+
+            id: announcement.id,
+
+            ...announcement.data()
+
+          };
+
+        });
+
+
+      console.log(
+        'Announcements loaded:',
+        this.announcements
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Error loading announcements:',
+        error
+      );
+
+    }
+
+  }
+
 }

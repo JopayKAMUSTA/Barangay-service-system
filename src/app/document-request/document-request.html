@@ -1,17 +1,36 @@
 <div class="request-page">
 
+    <!-- ========================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================== -->
+
     <div class="page-header">
 
-        <h1>Request a Document</h1>
+        <h1>
+            Request a Document
+        </h1>
 
         <p>
             Submit a request for a barangay document online.
         </p>
+
     </div>
+
+
+    <!-- ========================================== -->
+    <!-- REQUEST CARD -->
+    <!-- ========================================== -->
 
     <div class="request-card">
 
-        <form (ngSubmit)="submitRequest()">
+        <form
+            (ngSubmit)="submitRequest()"
+        >
+
+
+            <!-- ========================================== -->
+            <!-- DOCUMENT TYPE -->
+            <!-- ========================================== -->
 
             <div class="form-group">
 
@@ -19,23 +38,47 @@
                     Document Type
                 </label>
 
-                <select id="documentType"
-                [(ngModel)]="documentType"
-                name="documentType"
-                required>
-            
+
+                <select
+                    id="documentType"
+                    [(ngModel)]="documentType"
+                    name="documentType"
+                    required
+                >
+
                     <option value="">
                         Select a Document
                     </option>
 
-                    <option [value]="document.id" *ngFor="let document of documentTypes$ | async"
-                    [disabled]="document.status !== 'Active' ">
-                        {{ document.name }} -
+
+                    <option
+                        *ngFor="let document of documentTypes"
+                        [value]="document.id"
+                        [disabled]="document.status !== 'Active'"
+                    >
+
+                        {{ document.name }}
+
+                        -
+
                         P{{ document.fee | number:'1.2-2' }}
+
+                        <span
+                            *ngIf="document.status !== 'Active'"
+                        >
+                            (Unavailable)
+                        </span>
+
                     </option>
 
                 </select>
+
             </div>
+
+
+            <!-- ========================================== -->
+            <!-- PURPOSE -->
+            <!-- ========================================== -->
 
             <div class="form-group">
 
@@ -43,23 +86,47 @@
                     Purpose
                 </label>
 
-                <textarea name="purpose" id="purpose"
-                [(ngModel)]="purpose"
-                placeholder="Enter the purpose of your request" required>
-                </textarea>
+
+                <textarea
+                    id="purpose"
+                    name="purpose"
+                    [(ngModel)]="purpose"
+                    placeholder="Enter the purpose of your request"
+                    required
+                ></textarea>
+
             </div>
 
+
+            <!-- ========================================== -->
+            <!-- SUBMIT -->
+            <!-- ========================================== -->
+
             <button
-            type="submit"
-            class="submit-button">
-            
+                type="submit"
+                class="submit-button"
+            >
+
                 Submit Request
 
             </button>
 
-            <p class="status-message" *ngIf="statusMessage">
+
+            <!-- ========================================== -->
+            <!-- STATUS MESSAGE -->
+            <!-- ========================================== -->
+
+            <p
+                class="status-message"
+                *ngIf="statusMessage"
+            >
+
                 {{ statusMessage }}
+
             </p>
+
         </form>
+
     </div>
+
 </div>

@@ -1,126 +1,236 @@
 <div class="admin-request-page">
 
+    <!-- ========================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================== -->
+
     <div class="page-header">
 
-        <h1>Document Request</h1>
+        <h1>
+            Document Request
+        </h1>
 
         <p>
             Review and manage document requests submitted by residents.
         </p>
+
     </div>
 
 
+    <!-- ========================================== -->
+    <!-- REQUEST TABLE -->
+    <!-- ========================================== -->
+
     <div class="requests-card">
 
-        <div *ngIf="requests$ | async as requests">
+        <div>
 
-            <p class="empty-message"
-            *ngIf="requests.length === 0">
+            <!-- EMPTY STATE -->
 
-            No document requests found.
+            <p
+                class="empty-message"
+                *ngIf="requests.length === 0"
+            >
+
+                No document requests found.
+
             </p>
-       
 
-        <div class="table-wrapper" *ngIf="requests.length > 0">
 
-            <table>
+            <!-- TABLE -->
 
-                <thead>
+            <div
+                class="table-wrapper"
+                *ngIf="requests.length > 0"
+            >
 
-                    <tr>
+                <table>
 
-                        <th>Resident</th>
-                        <th>Document</th>
-                        <th>Purpose</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+                    <thead>
 
-                <tbody>
+                        <tr>
 
-                    <tr *ngFor="let request of requests">
+                            <th>
+                                Resident
+                            </th>
 
-                        <td>
+                            <th>
+                                Document
+                            </th>
 
-                            <div class="resident-card">
+                            <th>
+                                Purpose
+                            </th>
 
-                                <strong>
-                                    {{ request.firstname}}
-                                </strong>
+                            <th>
+                                Date
+                            </th>
 
-                                <small>
-                                    {{ request.email }}
-                                </small>
-                            </div>
-                        </td>
+                            <th>
+                                Status
+                            </th>
 
-                        <td>
-                            {{ request.documentType }}
-                        </td>
+                            <th>
+                                Action
+                            </th>
 
-                        <td>
-                            {{ request.purpose }}
-                        </td>
+                        </tr>
 
-                        <td>
-                            {{ request.createdAt?.toDate() | date:'medium' }}
-                        </td>
+                    </thead>
 
-                        <td>
 
-                            <span class="status" [ngClass]="request.status.toLowerCase()">
+                    <tbody>
 
-                                {{ request.status }}
-                            </span>
-                        </td>
+                        <tr
+                            *ngFor="let request of requests"
+                        >
 
-                        <td>
+                            <!-- RESIDENT -->
 
-                               <button type="button" class="view-button"
-                               (click)="viewRequest(request)">
-                                
-                               View Details
+                            <td>
+
+                                <div class="resident-card">
+
+                                    <strong>
+                                        {{ request.firstname }}
+                                    </strong>
+
+                                    <small>
+                                        {{ request.email }}
+                                    </small>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DOCUMENT -->
+
+                            <td>
+                                {{ request.documentType }}
+                            </td>
+
+
+                            <!-- PURPOSE -->
+
+                            <td>
+                                {{ request.purpose }}
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+                                {{ request.createdAt?.toDate() | date:'medium' }}
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span
+                                    class="status"
+                                    [ngClass]="request.status?.toLowerCase()"
+                                >
+
+                                    {{ request.status }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="view-button"
+                                    (click)="viewRequest(request)"
+                                >
+
+                                    View Details
+
                                 </button>
-                      
 
-                           <span class="completed"
-                           *ngIf="request.status === 'Completed'">
-                        
-                                Completed
 
-                        </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <span
+                                    class="completed"
+                                    *ngIf="request.status === 'Completed'"
+                                >
 
-            <div class="modal-overlay"
-            *ngIf="showModal"
-            (click)="closeModal()">
-                
-            <div class="modal-card"
-            (click)="$event.stopPropagation()">
+                                    Completed
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- REQUEST DETAILS MODAL -->
+    <!-- ========================================== -->
+
+    <div
+        class="modal-overlay"
+        *ngIf="selectedRequest"
+        (click)="closeModal()"
+    >
+
+        <div
+            class="modal-card"
+            (click)="$event.stopPropagation()"
+        >
+
+
+            <!-- ========================================== -->
+            <!-- MODAL HEADER -->
+            <!-- ========================================== -->
 
             <div class="modal-header">
 
                 <div>
 
-                     <h2>
+                    <h2>
                         Request Details
-                     </h2>
+                    </h2>
 
-                     <p>
-                        Review resident information and document request.
-                     </p>
+                    <p>
+                        Resident and document request information.
+                    </p>
 
                 </div>
 
-                <button type="button" class="close-button" (click)="closeModal()">
-                    X
+
+                <button
+                    type="button"
+                    class="close-button"
+                    (click)="closeModal()"
+                >
+
+                    <i class="bi bi-x"></i>
+
                 </button>
+
             </div>
+
+
+            <!-- ========================================== -->
+            <!-- RESIDENT INFORMATION -->
+            <!-- ========================================== -->
 
             <div class="modal-section">
 
@@ -128,330 +238,489 @@
                     Resident Information
                 </h3>
 
-                <div class="information-grid"
-                *ngIf="selectedResident">
 
-                <div class="information-item">
+                <div class="information-grid">
 
-                    <span>
-                        First Name
-                    </span>
 
-                    <strong>
-                        {{ selectedResident.firstname }}
-                    </strong>
+                    <!-- FULL NAME -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Full Name
+                        </span>
+
+                        <strong>
+
+                            {{ selectedRequest.firstname }}
+
+                            {{ selectedRequest.middlename }}
+
+                            {{ selectedRequest.lastname }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.email }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- CONTACT -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Contact Number
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.contactNumber }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- BIRTHDATE -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Birthdate
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.birthdate }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="information-item full-width">
+
+                        <span>
+                            Address
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.address }}
+                        </strong>
+
+                    </div>
+
                 </div>
 
-                <div class="information-item">
+            </div>
 
-                    <span>
-                        Middle Name
-                    </span>
 
-                    <strong>
-                        {{ selectedResident.middlename || 'N/A' }}
-                    </strong>
+            <!-- ========================================== -->
+            <!-- REQUEST INFORMATION -->
+            <!-- ========================================== -->
+
+            <div class="modal-section">
+
+                <h3>
+                    Request Information
+                </h3>
+
+
+                <div class="information-grid">
+
+
+                    <!-- DOCUMENT -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Document
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.documentType }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- PURPOSE -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Purpose
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.purpose }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- FEE -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Fee
+                        </span>
+
+                        <strong>
+                            ₱{{ selectedRequest.fee }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.status }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- DATE REQUESTED -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Date Requested
+                        </span>
+
+                        <strong>
+                            {{ selectedRequest.createdAt?.toDate() | date:'medium' }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- PAYMENT STATUS -->
+
+                    <div class="information-item">
+
+                        <span>
+                            Payment Status
+                        </span>
+
+                        <strong>
+
+                            <span
+                                class="payment-status"
+                                [ngClass]="
+                                    selectedRequest.paymentStatus === 'Paid'
+                                        ? 'paid'
+                                        : 'unpaid'
+                                "
+                            >
+
+                                {{ selectedRequest.paymentStatus || 'Unpaid' }}
+
+                            </span>
+
+                        </strong>
+
+                    </div>
+
                 </div>
 
-                <div class="information-item">
+            </div>
 
-                    <span>
-                        Last Name
-                    </span>
 
-                    <strong>
-                        {{ selectedResident.lastname }}
-                    </strong>
-                </div>
+            <!-- ========================================== -->
+            <!-- REMARKS -->
+            <!-- ========================================== -->
 
-                <div class="information-item">
+            <div class="modal-section">
 
-                    <span>
-                        Email
-                    </span>
+                <h3>
+                    Remarks
+                </h3>
 
-                    <strong>
-                        {{ selectedResident.email }}
-                    </strong>
-                </div>
 
-                <div class="information-item">
-                    
-                    <span>
-                        Contact Number
-                    </span>
+                <!-- NO REMARKS -->
 
-                    <strong>
-                        {{ selectedResident.contactNumber }}
-                    </strong>
-                </div>
+                <p
+                    class="no-remarks"
+                    *ngIf="!selectedRequest.remarks"
+                >
 
-                <div class="information-item">
+                    No remarks added.
 
-                    <span>
-                        Birthdate
-                    </span>
-
-                    <strong>
-                        {{ selectedResident.birthdate }}
-                    </strong>
-                </div>
-
-                <div class="information-item full-width ">
-
-                    <span>
-                        Address
-                    </span>
-
-                    <strong>
-                        {{ selectedResident.address }}
-                    </strong>
-                </div>
-
-                </div>
-                <p *ngIf="!selectedResident">
-
-                    Resident information not found.
                 </p>
+
+
+                <!-- EXISTING REMARKS -->
+
+                <p
+                    *ngIf="selectedRequest.remarks"
+                >
+
+                    {{ selectedRequest.remarks }}
+
+                </p>
+
             </div>
 
-            <div class="modal-section"
-            *ngIf="selectedRequest">
 
-            <h3>Document Request</h3>
+            <!-- ========================================== -->
+            <!-- MODAL ACTIONS -->
+            <!-- ========================================== -->
 
-            <div class="information-grid">
+            <div class="modal-actions">
 
-                <div class="information-item">
 
-                    <span>
-                        Document Type
+                <!-- ========================================== -->
+                <!-- PENDING -->
+                <!-- ========================================== -->
+
+                <ng-container
+                    *ngIf="selectedRequest.status === 'Pending'"
+                >
+
+                    <!-- REJECT -->
+
+                    <button
+                        type="button"
+                        class="reject-button"
+                        *ngIf="!showRejectForm"
+                        (click)="showRejectForm = true"
+                    >
+
+                        Reject Request
+
+                    </button>
+
+
+                    <!-- APPROVE -->
+
+                    <button
+                        type="button"
+                        class="approve-button"
+                        *ngIf="!showRejectForm"
+                        (click)="approveRequest()"
+                    >
+
+                        Approve Request
+
+                    </button>
+
+                </ng-container>
+
+
+                <!-- ========================================== -->
+                <!-- APPROVED -->
+                <!-- ========================================== -->
+
+                <ng-container
+                    *ngIf="selectedRequest.status === 'Approved'"
+                >
+
+                    <button
+                        type="button"
+                        class="approve-button"
+                        (click)="updateStatus(
+                            selectedRequest.id,
+                            'In Progress'
+                        )"
+                    >
+
+                        Start Processing
+
+                    </button>
+
+                </ng-container>
+
+
+                <!-- ========================================== -->
+                <!-- IN PROGRESS -->
+                <!-- ========================================== -->
+
+                <ng-container
+                    *ngIf="selectedRequest.status === 'In Progress'"
+                >
+
+                    <button
+                        type="button"
+                        class="approve-button"
+                        (click)="updateStatus(
+                            selectedRequest.id,
+                            'Ready for Pickup'
+                        )"
+                    >
+
+                        Mark Ready for Pickup
+
+                    </button>
+
+                </ng-container>
+
+
+                <!-- ========================================== -->
+                <!-- READY FOR PICKUP -->
+                <!-- ========================================== -->
+
+                <ng-container
+                    *ngIf="selectedRequest.status === 'Ready for Pickup'"
+                >
+
+                    <!-- UNPAID -->
+
+                    <button
+                        type="button"
+                        class="payment-button"
+                        *ngIf="
+                            selectedRequest.paymentStatus !== 'Paid'
+                        "
+                        (click)="updatePaymentStatus(
+                            selectedRequest.id,
+                            'Paid'
+                        )"
+                    >
+
+                        Mark as Paid
+
+                    </button>
+
+
+                    <!-- PAID -->
+
+                    <button
+                        type="button"
+                        class="approve-button"
+                        *ngIf="
+                            selectedRequest.paymentStatus === 'Paid'
+                        "
+                        (click)="updateStatus(
+                            selectedRequest.id,
+                            'Completed'
+                        )"
+                    >
+
+                        Complete Request
+
+                    </button>
+
+                </ng-container>
+
+
+                <!-- ========================================== -->
+                <!-- COMPLETED -->
+                <!-- ========================================== -->
+
+                <ng-container
+                    *ngIf="selectedRequest.status === 'Completed'"
+                >
+
+                    <span class="completed">
+
+                        Request Completed
+
                     </span>
 
-                    <strong>
-                        {{ selectedRequest.documentType }}
-                    </strong>
-                    
-                </div>
+                </ng-container>
 
-                <div class="information-item">
 
-                    <span>
-                        Fee
-                    </span>
+                <!-- ========================================== -->
+                <!-- CLOSE -->
+                <!-- ========================================== -->
 
-                    <strong>
-                        P{{ selectedRequest.fee | number:'1.2-2'}}
-                    </strong>
-                </div>
+                <button
+                    type="button"
+                    class="cancel-button"
+                    *ngIf="!showRejectForm"
+                    (click)="closeModal()"
+                >
 
-                <div class="information-item">
+                    Close
 
-                    <span>
-                        Payment Status
-                    </span>
+                </button>
 
-                    <span class="payment-status"
-                    [ngClass]="selectedRequest.paymentStatus?.toLowerCase()">
-                
-                        {{ selectedRequest.paymentStatus || 'Unpaid' }}
-                    </span>
-                </div>
-                
-                <div class="information-item">
-
-                    <span>
-                        Status
-                    </span>
-
-                    <span class="status" 
-                    [ngClass]="selectedRequest.status.toLowerCase()">
-
-                    {{ selectedRequest.status }}
-
-                    </span>
-                </div>
-
-                <div class="information-item full-width">
-
-                    <span>
-                        Purpose
-                    </span>
-
-                    <strong>
-                        {{ selectedRequest.purpose }}
-                    </strong>
-                </div>
-
-                <div class="information-item full-width">
-
-                    <span>
-                        Date Requested
-                    </span>
-
-                    <strong>
-                        {{ selectedRequest.createdAt?.toDate()| date:'medium' }}
-                    </strong>
-                </div>
-
-                <div class="information-item full-width">
-
-                    <span>
-                        Admin Remarks
-                    </span>
-
-                    <strong *ngIf="selectedRequest.remarks">
-
-                        {{ selectedRequest.remarks }}
-                    </strong>
-
-                    <span class="no-remarks"
-                    *ngIf="!selectedRequest.remarks">
-
-                    No remarks yet.
-
-                    </span>
-                </div>
             </div>
 
+
+            <!-- ========================================== -->
+            <!-- REJECTION FORM -->
+            <!-- ========================================== -->
+
+            <div
+                class="rejection-section"
+                *ngIf="showRejectForm"
+            >
+
+                <label>
+                    Reason for Rejection
+                </label>
+
+
+                <textarea
+                    [(ngModel)]="rejectionRemarks"
+                    placeholder="Enter the reason for rejecting this request..."
+                ></textarea>
+
+
+                <small>
+                    Please provide a reason before rejecting the request.
+                </small>
+
+
+                <div class="rejection-actions">
+
+
+                    <!-- CANCEL REJECTION -->
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        (click)="cancelReject()"
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+                    <!-- CONFIRM REJECTION -->
+
+                    <button
+                        type="button"
+                        class="reject-button"
+                        [disabled]="!rejectionRemarks.trim()"
+                        (click)="rejectRequest()"
+                    >
+
+                        Confirm Rejection
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
         </div>
 
-
-        <div class="modal-actions"
-        *ngIf="selectedRequest?.status === 'Pending' && !showRejectForm">
-
-        <button type="button" class="reject-button"
-        (click)="showRejectForm = true">
-    
-            Reject Request
-
-        </button>
-
-        <button type="button" class="approve-button"
-        (click)="updateStatus(selectedRequest.id, 'Approved')">
-
-        Approve Request
-
-        </button>
-
-        </div>
-
-        <div class="rejection-section"
-        *ngIf="selectedRequest?.status === 'Pending' && showRejectForm">
-
-        <label>
-            Rejection Remarks
-        </label>
-
-        <textarea [(ngModel)]="rejectionRemarks" 
-        rows="4"
-        placeholder="Enter the reason for rejecting this request...">
-        </textarea>
-
-        <small>
-            Please provide a reason so the resident knows what needs to be corrected.
-        </small>
-
-        <div class="rejection-actions">
-
-            <button type="button"
-            class="cancel-button"
-            (click)="cancelReject()">
-
-            Cancel
-
-            </button>
-
-            <button type="button"
-            class="reject-button"
-            [disabled]="!rejectionRemarks.trim()"
-            (click)="rejectRequest()">
-            
-            Confirm Rejection 
-
-            </button>
-
-        </div>
-
     </div>
-    
-
-    <div class="modal-actions"
-    *ngIf="selectedRequest?.status === 'Approved'
-    && selectedRequest?.paymentStatus !== 'Paid' ">
-
-
-    <button type="button" class="payment-button"
-    (click)="updatePaymentStatus(
-        selectedRequest.id,
-        'Paid'
-    )">
-
-    Mark as Paid
-
-    </button>
-        
-    </div>
-        
-
-    <div class="modal-actions"
-    *ngIf="selectedRequest?.status === 'Approved'
-    && selectedRequest?.paymentStatus === 'Paid'">
-
-    <button type="button" class="approve-button"
-    (click)="updateStatus(
-        selectedRequest.id,
-        'In Progress'
-    )">
-
-        Start Processing
-        
-    </button>
-
-</div>
-
-
-    <div class="modal-actions"
-    *ngIf="selectedRequest?.status === 'In Progress'">
-
-
-        <button type="button" class="approve-button"
-        (click)="updateStatus(
-            selectedRequest.id,
-            'Ready for Pickup'
-        )">
-
-        Ready for Pickup
-
-        </button>
-    </div>
-
-
-
-    <div class="modal-actions"
-    *ngIf="selectedRequest?.status === 'Ready for Pickup'">
-
-        <button type="button" class="approve-button"
-        (click)="updateStatus(
-            selectedRequest.id,
-            'Completed'
-        )">
-
-        Mark as Completed
-
-        </button>
-    </div>
-
-
-</div>
-        
-</div>
-      
-</div>
-   
-</div>
-    
-
-</div>
 
 </div>

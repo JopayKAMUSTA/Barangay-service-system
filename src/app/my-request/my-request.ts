@@ -2,22 +2,26 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth, authState } from '@angular/fire/auth';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs
+} from '@angular/fire/firestore';
 
-import { Firestore, collection, query, where, collectionData } from '@angular/fire/firestore';
-
-interface DocumentRequest 
-{
-  id:string;
+interface DocumentRequest {
+  id: string;
   userId: string;
-  email:string;
-  documentType:string;
-  documentTypeId:string;
-  purpose:string;
-  fee:number;
-  status:string;
-  remarks:string;
-  createdAt:any;
+  email: string;
+  documentType: string;
+  documentTypeId: string;
+  purpose: string;
+  fee: number;
+  status: string;
+  paymentStatus?: string;
+  remarks: string;
+  createdAt: any;
 }
 
 @Component({
@@ -32,32 +36,35 @@ export class MyRequest {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
 
-  requests: Observable<DocumentRequest[]> | null = null;
+  requests: DocumentRequest[] = [];
 
   loading = true;
 
-  constructor()
-  {
+  constructor() {
+
     authState(this.auth).subscribe(async user => {
 
-      if(!user)
-      {
-        this.requests = null;
+      if (!user) {
+
+        this.requests = [];
         this.loading = false;
+
         return;
       }
 
       await this.loadRequests(user.uid);
+
     });
+
   }
 
 
-  async loadRequests(userId: string)
-  {
+  async loadRequests(userId: string) {
+
     this.loading = true;
 
-    try
-    {
+    try {
+
       const requestRef = collection(
         this.firestore,
         'documentRequests'
@@ -65,27 +72,46 @@ export class MyRequest {
 
       const requestsQuery = query(
         requestRef,
-        where('userId', '==' , userId)  
+        where(
+          'userId',
+          '==',
+          userId
+        )
       );
 
-      this.requests = collectionData(
-        requestsQuery,
-        {
-          idField: 'id'
-        }
-      ) as Observable<DocumentRequest[]>;
+      const snapshot = await getDocs(
+        requestsQuery
+      );
+
+      this.requests = snapshot.docs.map(request => {
+
+        return {
+          id: request.id,
+          ...request.data()
+        } as DocumentRequest;
+
+      });
+
+      console.log(
+        'My requests loaded:',
+        this.requests
+      );
 
       this.loading = false;
-    }
-    catch (error)
-    {
-        console.error(
-          'Error loading requests: ',
-          error
-        );
 
-        this.loading = false;
     }
+    catch (error) {
+
+      console.error(
+        'Error loading requests:',
+        error
+      );
+
+      this.requests = [];
+      this.loading = false;
+
+    }
+
   }
- 
+
 }

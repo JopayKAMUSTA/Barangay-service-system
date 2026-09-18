@@ -1,9 +1,16 @@
-import { Component,inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Firestore, collection, addDoc, collectionData, deleteDoc, doc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc
+} from '@angular/fire/firestore';
+
 import { Auth, authState } from '@angular/fire/auth';
 
 @Component({
@@ -17,45 +24,80 @@ export class AdminAnnouncement {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
-  announcements$ : Observable<any[]>;
+  announcements: any[] = [];
 
   title = '';
   message = '';
 
   statusMessage = '';
-  
+
   constructor() {
 
     authState(this.auth).subscribe(user => {
-      
+
       console.log('Logged in user:', user);
       console.log('USER UID:', user?.uid);
       console.log('USER EMAIL:', user?.email);
+
     });
 
-    const announcementsRef = collection(
-      this.firestore,
-      'announcements'
-    );
+    this.loadAnnouncements();
 
-    this.announcements$ = collectionData(
-      announcementsRef,
-      {
-        idField: 'id'
-      }
-    );
   }
 
-  async createAnnouncement(){
 
-    if (!this.title.trim() || !this.message.trim()) {
+  async loadAnnouncements() {
 
-      this.statusMessage = 'Please enter a title and message.';
+    try {
+
+      const announcementsRef = collection(
+        this.firestore,
+        'announcements'
+      );
+
+      const snapshot = await getDocs(
+        announcementsRef
+      );
+
+      this.announcements = snapshot.docs.map(
+        announcement => ({
+          id: announcement.id,
+          ...announcement.data()
+        })
+      );
+
+      console.log(
+        'Announcements loaded:',
+        this.announcements
+      );
+
+    } catch (error) {
+
+      console.error(
+        'Error loading announcements:',
+        error
+      );
+
+    }
+
+  }
+
+
+  async createAnnouncement() {
+
+    if (
+      !this.title.trim() ||
+      !this.message.trim()
+    ) {
+
+      this.statusMessage =
+        'Please enter a title and message.';
 
       return;
     }
-    
-    try{
+
+
+    try {
 
       const announcementsRef = collection(
         this.firestore,
@@ -65,45 +107,66 @@ export class AdminAnnouncement {
       await addDoc(
         announcementsRef,
         {
-          title: this.title,
-          message: this.message,
+          title: this.title.trim(),
+          message: this.message.trim(),
           createdAt: new Date()
         }
       );
 
+
       this.title = '';
       this.message = '';
 
-      this.statusMessage = 'Announcement posted successfully.';
+      this.statusMessage =
+        'Announcement posted successfully.';
 
-    }
-    catch (error: any){
+
+      // Reload announcements
+      await this.loadAnnouncements();
+
+    } catch (error: any) {
 
       console.error(error);
 
-      this.statusMessage = error.message;
+      this.statusMessage =
+        error.message;
+
     }
+
   }
 
-  async deleteAnnouncement(id: string){
 
-    try{
-      
+  async deleteAnnouncement(id: string) {
+
+    try {
+
       const announcementRef = doc(
         this.firestore,
         'announcements',
         id
       );
 
-      await deleteDoc(announcementRef);
+      await deleteDoc(
+        announcementRef
+      );
 
-      this.statusMessage = 'Announcement deleted.';
+
+      this.statusMessage =
+        'Announcement deleted.';
+
+
+      // Reload announcements
+      await this.loadAnnouncements();
+
     } catch (error: any) {
 
       console.error(error);
 
-      this.statusMessage = error.message;
+      this.statusMessage =
+        error.message;
+
     }
+
   }
 
 }

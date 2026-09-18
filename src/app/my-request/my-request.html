@@ -1,7 +1,9 @@
 <div class="request-page">
 
     <div class="page-header">
+
         <div>
+
             <h1>
                 My Requests
             </h1>
@@ -9,110 +11,207 @@
             <p>
                 View and track your barangay document requests.
             </p>
+
         </div>
+
     </div>
+
 
     <div class="request-card">
 
-        <div class="loading" *ngIf="loading">
+
+        <!-- ========================================== -->
+        <!-- LOADING -->
+        <!-- ========================================== -->
+
+        <div
+            class="loading"
+            *ngIf="loading"
+        >
+
             Loading your requests....
+
         </div>
+
+
+        <!-- ========================================== -->
+        <!-- REQUEST CONTENT -->
+        <!-- ========================================== -->
+
         <ng-container *ngIf="!loading">
-        <ng-container *ngIf="!loading && requests | async as requestList ">
 
 
-            <div class="empty-state" 
-            *ngIf="requestList.length === 0">
-            
-            <h3>
-                No Requests found
-            </h3>
+            <!-- ========================================== -->
+            <!-- EMPTY STATE -->
+            <!-- ========================================== -->
 
-            <p>
-                You haven't submitted any document requests yet.
-            </p>
+            <div
+                class="empty-state"
+                *ngIf="requests.length === 0"
+            >
+
+                <h3>
+                    No Requests found
+                </h3>
+
+                <p>
+                    You haven't submitted any document requests yet.
+                </p>
+
             </div>
 
 
-            <div class="table-wrapper"
-            *ngIf="requestList.length > 0">
-            
-            <table>
+            <!-- ========================================== -->
+            <!-- REQUEST TABLE -->
+            <!-- ========================================== -->
 
-                <thead>
+            <div
+                class="table-wrapper"
+                *ngIf="requests.length > 0"
+            >
 
-                    <tr>
-                        <th>Document</th>
-                        <th>Purpose</th>
-                        <th>Fee</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+                <table>
 
-                <tbody>
+                    <thead>
 
-                    <tr *ngFor="let request of requestList">
+                        <tr>
 
-                        <td>
-                            <strong>
-                                {{ request.documentType }}
-                            </strong>
-                        </td>
+                            <th>
+                                Document
+                            </th>
 
-                        <td>
-                            <strong>
-                                {{ request.purpose}}
-                            </strong>
-                        </td>
+                            <th>
+                                Purpose
+                            </th>
 
-                        <td>
-                            <strong>
-                                P{{ request.fee | number:'1.2-2' }}
-                            </strong>
-                        </td>
+                            <th>
+                                Fee
+                            </th>
 
-                        <td>
-                            <strong>
-                                {{ request.createdAt?.toDate?.() | date:'medium' }}
-                            </strong>
-                        </td>
+                            <th>
+                                Date
+                            </th>
 
-                        <td>
+                            <th>
+                                Status
+                            </th>
 
-                            <span class="status" 
-                            [ngClass]="request.status.toLowerCase()">
+                            <th>
+                                Remarks
+                            </th>
 
-                                {{ request.status }}
-                            
-                            </span>
-                        </td>
+                        </tr>
 
-                        <td>
+                    </thead>
 
-                            <span *ngIf="request.status === 'Rejected' && request.remarks"
-                            class="rejection-remarks">
-                            
-                            {{ request.remarks }}
 
-                            </span>
+                    <tbody>
 
-                            <span *ngIf="request.status !== 'Rejected' || !request.remarks">
+                        <tr
+                            *ngFor="let request of requests"
+                        >
 
-                                -
-                                
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <!-- Document -->
+
+                            <td>
+
+                                <strong>
+                                    {{ request.documentType }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Purpose -->
+
+                            <td>
+
+                                <strong>
+                                    {{ request.purpose }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Fee -->
+
+                            <td>
+
+                                <strong>
+                                    P{{ request.fee | number:'1.2-2' }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Date -->
+
+                            <td>
+
+                                <strong>
+                                    {{ request.createdAt?.toDate?.() | date:'medium' }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Status -->
+
+                            <td>
+
+                                <span
+                                    class="status"
+                                    [ngClass]="request.status?.toLowerCase()"
+                                >
+
+                                    {{ request.status }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- Remarks -->
+
+                            <td>
+
+                                <span
+                                    *ngIf="
+                                        request.status === 'Rejected'
+                                        && request.remarks
+                                    "
+                                    class="rejection-remarks"
+                                >
+
+                                    {{ request.remarks }}
+
+                                </span>
+
+
+                                <span
+                                    *ngIf="
+                                        request.status !== 'Rejected'
+                                        || !request.remarks
+                                    "
+                                >
+
+                                    -
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
             </div>
 
-        </ng-container>
-        </ng-container>
-  
 
-     
-        
+        </ng-container>
+
     </div>
+
 </div>

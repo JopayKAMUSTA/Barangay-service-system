@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { Auth, authState } from '@angular/fire/auth';
 
-import { Firestore,doc,docData } from '@angular/fire/firestore';
-
-import { Observable, of } from 'rxjs';
+import {
+  Firestore,
+  doc,
+  getDoc
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-my-profile',
@@ -18,25 +20,81 @@ export class MyProfile {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
 
-  profile$: Observable<any> = of(null);
+  profile: any = null;
+
+  loading = true;
 
   constructor() {
 
-    authState(this.auth).subscribe(users => {
+    authState(this.auth).subscribe(async user => {
 
-      if(!users) {
+      if (!user) {
+
         console.log('No logged-in user');
-        this.profile$ = of(null);
+
+        this.profile = null;
+        this.loading = false;
+
         return;
       }
+
+      await this.loadProfile(user.uid);
+
+    });
+
+  }
+
+
+  async loadProfile(userId: string) {
+
+    this.loading = true;
+
+    try {
 
       const userRef = doc(
         this.firestore,
         'users',
-        users.uid
+        userId
       );
 
-      this.profile$ = docData(userRef);
-    });
+      const snapshot = await getDoc(userRef);
+
+      if (snapshot.exists()) {
+
+        this.profile = {
+          id: snapshot.id,
+          ...snapshot.data()
+        };
+
+        console.log(
+          'Profile loaded:',
+          this.profile
+        );
+
+      } else {
+
+        console.log(
+          'User profile not found'
+        );
+
+        this.profile = null;
+
+      }
+
+    }
+    catch (error) {
+
+      console.error(
+        'Error loading profile:',
+        error
+      );
+
+      this.profile = null;
+
+    }
+
+    this.loading = false;
+
   }
+
 }

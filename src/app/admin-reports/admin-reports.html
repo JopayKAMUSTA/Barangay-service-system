@@ -1,157 +1,169 @@
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
 
-  
 <div class="reports-page">
 
-
-<div class="page-header">
+  <div class="page-header">
 
     <p class="page-label">
-        MANKILAMEASE
+      MANKILAMEASE
     </p>
 
     <h1>
-        Reports
+      Reports
     </h1>
 
     <p>
-        Overview of document requests in MankilamEase.
+      Overview of document requests in MankilamEase.
     </p>
 
-</div>
+  </div>
 
 
-<div class="stats">
+  <!-- STATISTICS -->
+
+  <div class="stats">
 
     <div class="stat-card">
 
-        <div class="stat-icon">
-            <i class="bi bi-file-earmark-text"></i>
-        </div>
+      <div class="stat-icon">
+        <i class="bi bi-file-earmark-text"></i>
+      </div>
 
-        <div>
-            <span>
-                Total Requests
-            </span>
+      <div>
+        <span>
+          Total Requests
+        </span>
 
-            <h2>
-                {{ totalRequests$ | async }}
-            </h2>
-        </div>
+        <h2>
+          {{ totalRequests }}
+        </h2>
+      </div>
 
     </div>
 
 
     <div class="stat-card">
 
-        <div class="stat-icon">
-            <i class="bi bi-clock"></i>
-        </div>
+      <div class="stat-icon">
+        <i class="bi bi-clock"></i>
+      </div>
 
-        <div>
-            <span>
-                Pending
-            </span>
+      <div>
+        <span>
+          Pending
+        </span>
 
-            <h2>
-                {{ pendingRequests$ | async }}
-            </h2>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-        <div class="stat-icon">
-            <i class="bi bi-check-circle"></i>
-        </div>
-
-        <div>
-            <span>
-                Approved
-            </span>
-
-            <h2>
-                {{ approvedRequests$ | async }}
-            </h2>
-        </div>
+        <h2>
+          {{ pendingRequests }}
+        </h2>
+      </div>
 
     </div>
 
 
     <div class="stat-card">
 
-        <div class="stat-icon">
-            <i class="bi bi-x-circle"></i>
-        </div>
+      <div class="stat-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
 
-        <div>
-            <span>
-                Rejected
-            </span>
+      <div>
+        <span>
+          Approved
+        </span>
 
-            <h2>
-                {{ rejectedRequests$ | async }}
-            </h2>
-        </div>
+        <h2>
+          {{ approvedRequests }}
+        </h2>
+      </div>
 
     </div>
 
-</div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+
+      <div>
+        <span>
+          Rejected
+        </span>
+
+        <h2>
+          {{ rejectedRequests }}
+        </h2>
+      </div>
+
+    </div>
+
+  </div>
 
 
-<div class="report-card">
+  <!-- DOCUMENT BREAKDOWN -->
+
+  <div class="report-card">
 
     <div class="report-header">
-        <div>
-            <h2>Document Request Breakdown</h2>
-            <p>
-                Number of requests for each document type.
-            </p>
-        </div>
 
-        <div class="report-icon">
-            <i class="bi bi-bar-chart"></i>
-        </div>
+      <div>
+
+        <h2>
+          Document Request Breakdown
+        </h2>
+
+        <p>
+          Number of requests for each document type.
+        </p>
+
+      </div>
+
+      <div class="report-icon">
+        <i class="bi bi-bar-chart"></i>
+      </div>
+
     </div>
+
 
     <div class="document-list">
 
-        <div
-            class="document-row"
-            *ngFor="let document of (documentBreakdown$ | async)"
-        >
+      <div
+        class="document-row"
+        *ngFor="let document of documentBreakdown"
+      >
 
-            <div class="document-info">
+        <div class="document-info">
 
-                <div class="document-icon">
-                    <i class="bi bi-file-earmark-text"></i>
-                </div>
+          <div class="document-icon">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
 
-                <span>
-                    {{ document.name }}
-                </span>
-
-            </div>
-
-            <strong>
-                {{ document.count }}
-            </strong>
+          <span>
+            {{ document.name }}
+          </span>
 
         </div>
 
-        <div
-            class="empty-message"
-            *ngIf="(documentBreakdown$ | async)?.length === 0"
-        >
-            No document requests yet.
-        </div>
+        <strong>
+          {{ document.count }}
+        </strong>
+
+      </div>
+
+
+      <div
+        class="empty-message"
+        *ngIf="documentBreakdown.length === 0"
+      >
+        No document requests yet.
+      </div>
 
     </div>
 
-</div>
+  </div>
 
 </div>

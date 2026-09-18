@@ -1,12 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Firestore, collection,collectionData, query, where } from '@angular/fire/firestore';
-import { Observable, map, combineLatest, startWith } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  query,
+  where
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-admin-resident',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-resident.html',
   styleUrl: './admin-resident.css',
 })
@@ -14,66 +19,89 @@ export class AdminResident {
 
   private firestore = inject(Firestore);
 
-  residents$: Observable<any[]>;
-  
-  filteredResidents$: Observable <any[]>;
+  residents: any[] = [];
+  filteredResidents: any[] = [];
 
   searchText = '';
 
   constructor() {
-
-    const usersRef = collection(
-      this.firestore,
-      'users'
-    );
-
-    const residentsQuery = query(
-      usersRef,
-      where('role','==' ,'resident')
-    );
-
-    this.residents$ = collectionData(
-      residentsQuery,
-      {
-        idField:'id'
-      }
-    );
-    
-    this.filteredResidents$ = this.residents$;
-    
+    this.loadResidents();
   }
-  searchResidents(){
+
+  async loadResidents() {
+
+    try {
+
+      const usersRef = collection(
+        this.firestore,
+        'users'
+      );
+
+      const residentsQuery = query(
+        usersRef,
+        where('role', '==', 'resident')
+      );
+
+      const snapshot = await getDocs(residentsQuery);
+
+      this.residents = snapshot.docs.map(resident => ({
+        id: resident.id,
+        ...resident.data()
+      }));
+
+      this.filteredResidents = this.residents;
+
+      console.log('Residents loaded:', this.residents);
+
+    } catch (error) {
+
+      console.error(
+        'Error loading residents:',
+        error
+      );
+
+    }
+
+  }
+
+
+  searchResidents() {
 
     const search = this.searchText
       .toLowerCase()
       .trim();
 
-      this.filteredResidents$ = this.residents$.pipe(
+    if (!search) {
 
-        map(residents => {
+      this.filteredResidents = this.residents;
 
-          if(!search){
-            return residents;
-          }
+      return;
+    }
 
-          return residents.filter(resident => {
-             
-            const name = `${resident.firstname || ''} ${resident.middlename || ''} ${resident.lastname || ''} `.toLowerCase();
-          
-            const email = (resident.email || '').toLowerCase();
 
-            const contact = (resident.contactNumber || '').toLowerCase();
+    this.filteredResidents = this.residents.filter(
+      resident => {
 
-            return (
-              name.includes(search) ||
-              email.includes(search) ||
-              contact.includes(search)
-            );
-          });
-        })
-      );
+        const name =
+          `${resident.firstname || ''} ${resident.middlename || ''} ${resident.lastname || ''}`
+            .toLowerCase();
+
+        const email =
+          (resident.email || '').toLowerCase();
+
+        const contact =
+          (resident.contactNumber || '').toLowerCase();
+
+
+        return (
+          name.includes(search) ||
+          email.includes(search) ||
+          contact.includes(search)
+        );
+
+      }
+    );
+
   }
 
-
-  
 }

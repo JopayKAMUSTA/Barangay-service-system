@@ -2,15 +2,38 @@
 
     <div class="page-header">
 
-        <h1>My Profile</h1>
+        <h1>
+            My Profile
+        </h1>
 
         <p>
-            View your personal Information.
+            View your personal information.
         </p>
+
     </div>
 
 
-    <div *ngIf="profile$ | async as profile">
+    <!-- ========================================== -->
+    <!-- LOADING -->
+    <!-- ========================================== -->
+
+    <div
+        class="loading"
+        *ngIf="loading"
+    >
+
+        Loading your profile...
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PROFILE -->
+    <!-- ========================================== -->
+
+    <div
+        *ngIf="!loading && profile"
+    >
 
         <div class="profile-card">
 
@@ -18,7 +41,11 @@
                 Personal Information
             </h2>
 
+
             <div class="profile-grid">
+
+
+                <!-- First Name -->
 
                 <div class="profile-item">
 
@@ -27,9 +54,13 @@
                     </span>
 
                     <strong>
-                        {{ profile.firstname}}
+                        {{ profile.firstname }}
                     </strong>
+
                 </div>
+
+
+                <!-- Middle Name -->
 
                 <div class="profile-item">
 
@@ -40,7 +71,26 @@
                     <strong>
                         {{ profile.middlename || 'N/A' }}
                     </strong>
+
                 </div>
+
+
+                <!-- Last Name -->
+
+                <div class="profile-item">
+
+                    <span>
+                        Last Name
+                    </span>
+
+                    <strong>
+                        {{ profile.lastname || 'N/A' }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Email -->
 
                 <div class="profile-item">
 
@@ -51,7 +101,11 @@
                     <strong>
                         {{ profile.email }}
                     </strong>
+
                 </div>
+
+
+                <!-- Contact Number -->
 
                 <div class="profile-item">
 
@@ -62,18 +116,26 @@
                     <strong>
                         {{ profile.contactNumber }}
                     </strong>
+
                 </div>
+
+
+                <!-- Birthdate -->
 
                 <div class="profile-item">
 
                     <span>
-                        BirthDate
+                        Birthdate
                     </span>
 
                     <strong>
                         {{ profile.birthdate }}
                     </strong>
+
                 </div>
+
+
+                <!-- Address -->
 
                 <div class="profile-item full-width">
 
@@ -84,14 +146,31 @@
                     <strong>
                         {{ profile.address }}
                     </strong>
+
                 </div>
+
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="empty-message" *ngIf="!(profile$ | async)">
+
+    <!-- ========================================== -->
+    <!-- NO PROFILE -->
+    <!-- ========================================== -->
+
+    <div
+        class="empty-message"
+        *ngIf="!loading && !profile"
+    >
+
         <p>
             Please log in first.
         </p>
+
     </div>
+
+
 </div>

@@ -11,13 +11,11 @@ import {
 import {
   Firestore,
   collection,
-  collectionData,
+  getDocs,
   addDoc,
   getDoc,
   doc
 } from '@angular/fire/firestore';
-
-import { Observable } from 'rxjs';
 
 import Swal from 'sweetalert2';
 
@@ -25,8 +23,6 @@ import Swal from 'sweetalert2';
 interface DocumentType {
 
   id: string;
-
-  userId: string;
 
   name: string;
 
@@ -53,11 +49,23 @@ export class DocumentRequest {
   private firestore = inject(Firestore);
 
 
-  documentTypes$: Observable<DocumentType[]>;
-
+  // ==========================================
+  // USER
+  // ==========================================
 
   user: User | null = null;
 
+
+  // ==========================================
+  // DOCUMENT TYPES
+  // ==========================================
+
+  documentTypes: DocumentType[] = [];
+
+
+  // ==========================================
+  // FORM
+  // ==========================================
 
   documentType = '';
 
@@ -65,6 +73,10 @@ export class DocumentRequest {
 
   statusMessage = '';
 
+
+  // ==========================================
+  // CONSTRUCTOR
+  // ==========================================
 
   constructor() {
 
@@ -80,23 +92,93 @@ export class DocumentRequest {
     });
 
 
-    const documentTypesRef = collection(
-      this.firestore,
-      'documentTypes'
-    );
-
-
-    this.documentTypes$ = collectionData(
-      documentTypesRef,
-      {
-        idField: 'id'
-      }
-    ) as Observable<DocumentType[]>;
+    this.loadDocumentTypes();
 
   }
 
 
-  
+  // ==========================================
+  // LOAD DOCUMENT TYPES
+  // ==========================================
+
+  async loadDocumentTypes() {
+
+    try {
+
+      const documentTypesRef = collection(
+        this.firestore,
+        'documentTypes'
+      );
+
+
+      const snapshot =
+        await getDocs(documentTypesRef);
+
+
+      this.documentTypes =
+        snapshot.docs.map(document => {
+
+          const data =
+            document.data();
+
+
+          return {
+
+            id: document.id,
+
+            name:
+              data['name'],
+
+            description:
+              data['description'],
+
+            fee:
+              data['fee'],
+
+            status:
+              data['status']
+
+          };
+
+        });
+
+
+      console.log(
+        'Document Types:',
+        this.documentTypes
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Error loading document types:',
+        error
+      );
+
+
+      Swal.fire({
+
+        icon: 'error',
+
+        title: 'Unable to Load Documents',
+
+        text:
+          'The available document types could not be loaded.',
+
+        confirmButtonColor: '#f57c00'
+
+      });
+
+    }
+
+  }
+
+
+  // ==========================================
+  // SUBMIT REQUEST
+  // ==========================================
 
   async submitRequest() {
 
@@ -105,11 +187,16 @@ export class DocumentRequest {
       this.documentType
     );
 
+
     console.log(
       'Purpose:',
       this.purpose
     );
 
+
+    // ==========================================
+    // VALIDATE DOCUMENT
+    // ==========================================
 
     if (!this.documentType) {
 
@@ -119,7 +206,8 @@ export class DocumentRequest {
 
         title: 'Select a Document',
 
-        text: 'Please select a document before submitting your request.',
+        text:
+          'Please select a document before submitting your request.',
 
         confirmButtonColor: '#f57c00'
 
@@ -130,6 +218,10 @@ export class DocumentRequest {
     }
 
 
+    // ==========================================
+    // VALIDATE PURPOSE
+    // ==========================================
+
     if (!this.purpose.trim()) {
 
       Swal.fire({
@@ -138,7 +230,8 @@ export class DocumentRequest {
 
         title: 'Purpose Required',
 
-        text: 'Please enter the purpose of your request.',
+        text:
+          'Please enter the purpose of your request.',
 
         confirmButtonColor: '#f57c00'
 
@@ -151,8 +244,12 @@ export class DocumentRequest {
 
     try {
 
+      // ==========================================
+      // CHECK LOGIN
+      // ==========================================
 
-      const user = this.auth.currentUser;
+      const user =
+        this.auth.currentUser;
 
 
       if (!user) {
@@ -163,7 +260,8 @@ export class DocumentRequest {
 
           title: 'Login Required',
 
-          text: 'Please log in first before submitting a request.',
+          text:
+            'Please log in first before submitting a request.',
 
           confirmButtonColor: '#f57c00'
 
@@ -173,6 +271,10 @@ export class DocumentRequest {
 
       }
 
+
+      // ==========================================
+      // LOADING
+      // ==========================================
 
       Swal.fire({
 
@@ -195,30 +297,12 @@ export class DocumentRequest {
       });
 
 
-
-
-      const documents =
-        await new Promise<DocumentType[]>(
-          (resolve) => {
-
-            this.documentTypes$.subscribe({
-
-              next: documents => {
-
-                resolve(documents);
-
-              }
-
-            });
-
-          }
-        );
-
-
-    
+      // ==========================================
+      // FIND SELECTED DOCUMENT
+      // ==========================================
 
       const selectedDocument =
-        documents.find(
+        this.documentTypes.find(
           document =>
             document.id === this.documentType
         );
@@ -232,7 +316,8 @@ export class DocumentRequest {
 
           title: 'Document Not Found',
 
-          text: 'The selected document could not be found.',
+          text:
+            'The selected document could not be found.',
 
           confirmButtonColor: '#f57c00'
 
@@ -243,7 +328,9 @@ export class DocumentRequest {
       }
 
 
- 
+      // ==========================================
+      // CHECK DOCUMENT STATUS
+      // ==========================================
 
       if (
         selectedDocument.status !== 'Active'
@@ -255,7 +342,8 @@ export class DocumentRequest {
 
           title: 'Document Unavailable',
 
-          text: 'This document is currently unavailable for requests.',
+          text:
+            'This document is currently unavailable for requests.',
 
           confirmButtonColor: '#f57c00'
 
@@ -271,6 +359,10 @@ export class DocumentRequest {
         selectedDocument
       );
 
+
+      // ==========================================
+      // GET RESIDENT PROFILE
+      // ==========================================
 
       const userDocRef = doc(
         this.firestore,
@@ -291,7 +383,8 @@ export class DocumentRequest {
 
           title: 'Profile Not Found',
 
-          text: 'Your resident profile could not be found.',
+          text:
+            'Your resident profile could not be found.',
 
           confirmButtonColor: '#f57c00'
 
@@ -306,6 +399,9 @@ export class DocumentRequest {
         userDoc.data();
 
 
+      // ==========================================
+      // CREATE REQUEST
+      // ==========================================
 
       await addDoc(
 
@@ -316,7 +412,10 @@ export class DocumentRequest {
 
         {
 
-          userId: user.uid,
+          // Resident
+
+          userId:
+            user.uid,
 
           firstname:
             userData['firstname'],
@@ -331,6 +430,8 @@ export class DocumentRequest {
             user.email,
 
 
+          // Document
+
           documentTypeId:
             selectedDocument.id,
 
@@ -341,21 +442,31 @@ export class DocumentRequest {
             selectedDocument.fee,
 
 
+          // Request
+
           purpose:
             this.purpose.trim(),
 
+
+          // Status
 
           status:
             'Pending',
 
 
+          // Payment
+
           paymentStatus:
             'Unpaid',
 
 
+          // Remarks
+
           remarks:
             '',
 
+
+          // Date
 
           createdAt:
             new Date()
@@ -365,6 +476,9 @@ export class DocumentRequest {
       );
 
 
+      // ==========================================
+      // SUCCESS
+      // ==========================================
 
       await Swal.fire({
 
@@ -372,7 +486,8 @@ export class DocumentRequest {
 
         title: 'Request Submitted',
 
-        text: 'Your document request has been submitted successfully.',
+        text:
+          'Your document request has been submitted successfully.',
 
         confirmButtonColor: '#f57c00',
 
@@ -385,7 +500,9 @@ export class DocumentRequest {
       });
 
 
-    
+      // ==========================================
+      // CLEAR FORM
+      // ==========================================
 
       this.documentType = '';
 
@@ -408,7 +525,8 @@ export class DocumentRequest {
 
         title: 'Request Failed',
 
-        text: 'Something went wrong while submitting your request. Please try again.',
+        text:
+          'Something went wrong while submitting your request. Please try again.',
 
         confirmButtonColor: '#f57c00'
 

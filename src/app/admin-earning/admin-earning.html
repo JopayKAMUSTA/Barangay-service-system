@@ -1,155 +1,178 @@
 <div class="admin-earnings-page">
-    
-    <div class="page-header">
 
-        <h1>
-            Earnings
-        </h1>
+  <div class="page-header">
+
+    <h1>
+      Earnings
+    </h1>
+
+    <p>
+      Monitor payments collected from document requests.
+    </p>
+
+  </div>
+
+
+  <!-- SUMMARY -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <span>
+        Total Earnings
+      </span>
+
+      <strong>
+        P{{ getTotalEarnings(requests) | number:'1.2-2' }}
+      </strong>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <span>
+        Paid Requests
+      </span>
+
+      <strong>
+        {{ getPaidCount(requests) }}
+      </strong>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <span>
+        Pending Payment
+      </span>
+
+      <strong>
+        P{{ getPendingPayment(requests) | number:'1.2-2' }}
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- PAYMENT HISTORY -->
+
+  <div class="earnings-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h2>
+          Payment History
+        </h2>
 
         <p>
-            Monitor payments collected from document requests.
+          Documents that have already been paid.
         </p>
 
+      </div>
+
     </div>
 
-    <div *ngIf="requests$ | async as requests">
 
-        <div class="summary-grid">
-            
-            <div class="summary-card">
+    <div class="table-wrapper">
 
-                 <span>
-                    Total Earnings
-                 </span>
+      <table>
 
-                 <strong>
-                    P{{ getTotalEarnings(requests) | number:'1.2-2' }}
-                 </strong>
-            </div>
+        <thead>
 
-            <div class="summary-card">
+          <tr>
+            <th>Resident</th>
+            <th>Document</th>
+            <th>Fee</th>
+            <th>Status</th>
+            <th>Date Paid</th>
+          </tr>
 
-                <span>
-                    Paid Requests
-                </span>
+        </thead>
 
-                <strong>
-                    {{ getPaidCount(requests) }}
-                </strong>
 
-            </div>
+        <tbody>
 
-            <div class="summary-card">
+          <tr
+            *ngFor="let request of getPaidRequests(requests)"
+          >
 
-                <span>
-                    Pending Payment
-                </span>
+            <td>
+
+              <div class="resident-info">
 
                 <strong>
-                    P{{ getPendingPayment(requests) | number:'1.2-2' }}
+                  {{ request.firstname }}
+                  {{ request.lastname }}
                 </strong>
-            </div>
 
-        </div>
+                <small>
+                  {{ request.email }}
+                </small>
 
-        <div class="earnings-card">
+              </div>
 
-            <div class="card-header">
+            </td>
 
-                <div>
 
-                    <h2>
-                        Payment History
-                    </h2>
+            <td>
+              {{ request.documentType }}
+            </td>
 
-                    <p>
-                        Documents that have already been paid.
-                    </p>
 
-                </div>
-                
-            </div>
+            <td>
 
-            <div class="table-wrapper">
+              <strong>
+                P{{ request.fee | number:'1.2-2' }}
+              </strong>
 
-                <table>
+            </td>
 
-                    <thead>
 
-                        <tr>
+            <td>
 
-                            <th>Resident</th>
-                            <th>Document</th>
-                            <th>Fee</th>
-                            <th>Status</th>
-                            <th>Date Paid</th>
+              <span class="paid-status">
+                Paid
+              </span>
 
-                        </tr>
+            </td>
 
-                    </thead>
 
-                    <tbody>
+            <td>
 
-                        <tr *ngFor="let request of getPaidRequests(requests)">
+              {{ request.paidAt?.toDate() | date:'medium' }}
 
-                            <td>
+            </td>
 
-                                <div class="resident-info">
+          </tr>
 
-                                    <strong>
-                                        {{ request.firstname }}
-                                        {{ request.lastname }}
-                                    </strong>
 
-                                    <small>
-                                        {{ request.email }}
-                                    </small>
+          <tr
+            *ngIf="getPaidRequests(requests).length === 0"
+          >
 
-                                </div>
+            <td
+              colspan="5"
+              class="empty-message"
+            >
 
-                            </td>
+              No paid requests found.
 
-                            <td>
-                                {{ request.documentType }}
-                            </td>
+            </td>
 
-                            <td>
-                                <strong>
-                                    P{{ request.fee | number:'1.2-2' }}
-                                </strong>
-                            </td>
+          </tr>
 
-                            <td>
+        </tbody>
 
-                                <span class="paid-status">
-                                    Paid
-                                </span>
+      </table>
 
-                            </td>
-
-                            <td>
-
-                                {{ request.paidAt?.toDate() | date:'medium'}}
-
-                            </td>
-
-                        </tr>
-
-                        <tr *ngIf="getPaidRequests(requests).length === 0">
-
-                            <td colspan="5" class="empty-message">
-
-                                No paid requests found.
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-        </div>
     </div>
+
+  </div>
+
 </div>

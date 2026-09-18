@@ -4,197 +4,212 @@
 
 <div class="announcement-page">
 
-    <div class="page-header">
+  <div class="page-header">
 
-        <div>
-            <span class="page-label">
-                ADMINISTRATION
-            </span>
+    <div>
 
-            <h1>Announcements</h1>
+      <span class="page-label">
+        ADMINISTRATION
+      </span>
 
-            <p>
-                Create and manage announcements for MankilamEase residents.
-            </p>
-        </div>
+      <h1>
+        Announcements
+      </h1>
+
+      <p>
+        Create and manage announcements for MankilamEase residents.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- CREATE ANNOUNCEMENT -->
+
+  <div class="announcement-form-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h2>
+          Create Announcement
+        </h2>
+
+        <p>
+          Share important information with residents.
+        </p>
+
+      </div>
+
+      <div class="header-icon">
+        <i class="bi bi-megaphone"></i>
+      </div>
 
     </div>
 
 
+    <div class="form-group">
 
-    <div class="announcement-form-card">
+      <label for="title">
+        Title
+      </label>
 
-        <div class="card-header">
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="title"
+        placeholder="Enter announcement title"
+      >
 
-            <div>
-                <h2>Create Announcement</h2>
+    </div>
 
-                <p>
-                    Share important information with residents.
-                </p>
+
+    <div class="form-group">
+
+      <label for="message">
+        Message
+      </label>
+
+      <textarea
+        id="message"
+        [(ngModel)]="message"
+        placeholder="Enter announcement message"
+        rows="5">
+      </textarea>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="post-button"
+      (click)="createAnnouncement()">
+
+      <i class="bi bi-send"></i>
+
+      Post Announcement
+
+    </button>
+
+
+    @if (statusMessage) {
+
+      <div class="status-message">
+
+        <i class="bi bi-check-circle"></i>
+
+        {{ statusMessage }}
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- EXISTING ANNOUNCEMENTS -->
+
+  <div class="announcement-list-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h2>
+          Existing Announcements
+        </h2>
+
+        <p>
+          View and manage announcements currently posted.
+        </p>
+
+      </div>
+
+      <div class="header-icon">
+        <i class="bi bi-list-ul"></i>
+      </div>
+
+    </div>
+
+
+    @if (announcements.length === 0) {
+
+      <div class="empty-state">
+
+        <i class="bi bi-megaphone"></i>
+
+        <h3>
+          No Announcements
+        </h3>
+
+        <p>
+          There are currently no announcements posted.
+        </p>
+
+      </div>
+
+    } @else {
+
+      <div class="announcement-list">
+
+        @for (
+          announcement of announcements;
+          track announcement.id
+        ) {
+
+          <div class="announcement-card">
+
+            <div class="announcement-icon">
+
+              <i class="bi bi-megaphone-fill"></i>
+
             </div>
 
-            <div class="header-icon">
-                <i class="bi bi-megaphone"></i>
-            </div>
 
-        </div>
+            <div class="announcement-content">
 
+              <h3>
+                {{ announcement.title }}
+              </h3>
 
-        <div class="form-group">
+              <p>
+                {{ announcement.message }}
+              </p>
 
-            <label for="title">
-                Title
-            </label>
+              <small>
 
-            <input
-                id="title"
-                type="text"
-                [(ngModel)]="title"
-                placeholder="Enter announcement title"
-            >
+                <i class="bi bi-calendar3"></i>
 
-        </div>
+                Posted:
 
+                {{ announcement.createdAt?.toDate() | date:'medium' }}
 
-        <div class="form-group">
-
-            <label for="message">
-                Message
-            </label>
-
-            <textarea
-                id="message"
-                [(ngModel)]="message"
-                placeholder="Enter announcement message"
-                rows="5">
-            </textarea>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="post-button"
-            (click)="createAnnouncement()">
-
-            <i class="bi bi-send"></i>
-
-            Post Announcement
-
-        </button>
-
-
-        @if (statusMessage) {
-
-            <div class="status-message">
-
-                <i class="bi bi-check-circle"></i>
-
-                {{ statusMessage }}
+              </small>
 
             </div>
+
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="deleteAnnouncement(announcement.id)">
+
+              <i class="bi bi-trash"></i>
+
+              Delete
+
+            </button>
+
+          </div>
 
         }
 
-    </div>
+      </div>
 
-    <div class="announcement-list-card">
+    }
 
-        <div class="card-header">
-
-            <div>
-                <h2>Existing Announcements</h2>
-
-                <p>
-                    View and manage announcements currently posted.
-                </p>
-            </div>
-
-            <div class="header-icon">
-                <i class="bi bi-list-ul"></i>
-            </div>
-
-        </div>
-
-
-        @if (announcements$ | async; as announcements) {
-
-            @if (announcements.length === 0) {
-
-                <div class="empty-state">
-
-                    <i class="bi bi-megaphone"></i>
-
-                    <h3>No Announcements</h3>
-
-                    <p>
-                        There are currently no announcements posted.
-                    </p>
-
-                </div>
-
-            } @else {
-
-                <div class="announcement-list">
-
-                    @for (
-                        announcement of announcements;
-                        track announcement.id
-                    ) {
-
-                        <div class="announcement-card">
-
-                            <div class="announcement-icon">
-
-                                <i class="bi bi-megaphone-fill"></i>
-
-                            </div>
-
-
-                            <div class="announcement-content">
-
-                                <h3>
-                                    {{ announcement.title }}
-                                </h3>
-
-                                <p>
-                                    {{ announcement.message }}
-                                </p>
-
-                                <small>
-
-                                    <i class="bi bi-calendar3"></i>
-
-                                    Posted:
-                                    {{ announcement.createdAt?.toDate() | date:'medium' }}
-
-                                </small>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="delete-button"
-                                (click)="deleteAnnouncement(announcement.id)">
-
-                                <i class="bi bi-trash"></i>
-
-                                Delete
-
-                            </button>
-
-                        </div>
-
-                    }
-
-                </div>
-
-            }
-
-        }
-
-    </div>
+  </div>
 
 </div>
