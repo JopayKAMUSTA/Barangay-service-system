@@ -1,8 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import {
   Auth,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  signOut
 } from '@angular/fire/auth';
 
 import { Router, RouterLink } from '@angular/router';
@@ -35,7 +39,9 @@ export class Login {
 
   async login() {
 
-  
+    // ==========================================
+    // VALIDATE INPUT
+    // ==========================================
 
     if (!this.email || !this.password) {
 
@@ -50,6 +56,9 @@ export class Login {
     }
 
 
+    // ==========================================
+    // LOADING
+    // ==========================================
 
     Swal.fire({
       title: 'Signing In',
@@ -66,27 +75,51 @@ export class Login {
 
     try {
 
+      // ==========================================
+      // KEEP USER LOGGED IN
+      // ==========================================
 
-      const credentials = await signInWithEmailAndPassword(
+      await setPersistence(
         this.auth,
-        this.email,
-        this.password
+        browserLocalPersistence
       );
+
+
+      // ==========================================
+      // FIREBASE LOGIN
+      // ==========================================
+
+      const credentials =
+        await signInWithEmailAndPassword(
+          this.auth,
+          this.email,
+          this.password
+        );
 
 
       const uid = credentials.user.uid;
 
 
-  
+      // ==========================================
+      // GET USER PROFILE
+      // ==========================================
 
       const userDoc = await getDoc(
-        doc(this.firestore, 'users', uid)
+        doc(
+          this.firestore,
+          'users',
+          uid
+        )
       );
 
 
-     
+      // ==========================================
+      // PROFILE NOT FOUND
+      // ==========================================
 
       if (!userDoc.exists()) {
+
+        await signOut(this.auth);
 
         Swal.fire({
           icon: 'error',
@@ -102,7 +135,9 @@ export class Login {
       const userData = userDoc.data();
 
 
-   
+      // ==========================================
+      // ADMIN LOGIN
+      // ==========================================
 
       if (userData['role'] === 'admin') {
 
@@ -112,7 +147,8 @@ export class Login {
 
           title: 'Login Successful',
 
-          text: 'Welcome to the MankilamEase Admin Panel.',
+          text:
+            'Welcome to the MankilamEase Admin Panel.',
 
           confirmButtonColor: '#f57c00',
 
@@ -132,7 +168,9 @@ export class Login {
       }
 
 
-   
+      // ==========================================
+      // RESIDENT LOGIN
+      // ==========================================
 
       else {
 
@@ -142,7 +180,8 @@ export class Login {
 
           title: 'Login Successful',
 
-          text: 'Welcome to MankilamEase!',
+          text:
+            'Welcome to MankilamEase!',
 
           confirmButtonColor: '#f57c00',
 
@@ -161,13 +200,20 @@ export class Login {
 
       }
 
-
-    } catch (error: any) {
-
-      console.error('Login error:', error);
+    }
 
 
- 
+    // ==========================================
+    // LOGIN ERROR
+    // ==========================================
+
+    catch (error: any) {
+
+      console.error(
+        'Login error:',
+        error
+      );
+
 
       let errorMessage =
         'Unable to login. Please try again.';
@@ -205,7 +251,9 @@ export class Login {
       }
 
 
-
+      // ==========================================
+      // SHOW ERROR
+      // ==========================================
 
       Swal.fire({
 
